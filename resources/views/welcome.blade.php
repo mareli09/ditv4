@@ -15,13 +15,13 @@
 
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img src="{{ asset('images/hero1.jpg') }}" class="d-block w-100" alt="CESO Activity">
+            <img src="https://picsum.photos/1200/400?1" class="d-block w-100" alt="CESO Activity">
         </div>
         <div class="carousel-item">
-            <img src="{{ asset('images/hero2.jpg') }}" class="d-block w-100" alt="Community Program">
+            <img src="https://picsum.photos/1200/400?2" class="d-block w-100" alt="Community Program">
         </div>
         <div class="carousel-item">
-            <img src="{{ asset('images/hero3.jpg') }}" class="d-block w-100" alt="Outreach Event">
+            <img src="https://picsum.photos/1200/400?3" class="d-block w-100" alt="Outreach Event">
         </div>
     </div>
 

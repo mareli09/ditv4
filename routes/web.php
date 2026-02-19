@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\IT\ITDashboardController;
 
 
 Route::get('/', function () {
@@ -27,3 +28,14 @@ Route::post('/login', [AuthController::class, 'login'])
 
 Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+
+    Route::get('/it/dashboard', [ITDashboardController::class, 'index'])
+        ->name('it.dashboard');
+
+    Route::get('/it/users', function () {
+        return "User Management Page";
+    })->name('it.users');
+
+});

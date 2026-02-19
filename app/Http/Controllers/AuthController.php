@@ -15,17 +15,35 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $request->validate([
-            'username' => 'required',
+            'email' => 'required|email',
             'password' => 'required'
         ]);
 
-        if (Auth::attempt([
-            'username' => $request->username,
-            'password' => $request->password
-        ])) {
+        if (
+            Auth::attempt([
+                'email' => $request->email,
+                'password' => $request->password
+            ])
+        ) {
 
             $request->session()->regenerate();
-            return redirect('/');
+
+            // Role-based redirect
+            $user = Auth::user();
+
+            if ($user->role === 'IT') {
+                return redirect()->route('it.dashboard');
+            }
+
+            if ($user->role === 'CESO') {
+                return redirect('/'); // Temporary: redirect to home
+            }
+
+            if ($user->role === 'Faculty') {
+                return redirect('/'); // Temporary: redirect to home
+            }
+
+            return redirect('/'); // Temporary: redirect to home
         }
 
         return back()->with('error', 'Invalid credentials.');
