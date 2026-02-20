@@ -48,7 +48,11 @@ class AuthController extends Controller
                 return redirect('/'); // Temporary: redirect to home
             }
 
-            return redirect('/'); // Temporary: redirect to home
+            if ($user->role === 'Community') {
+                return redirect()->route('community.dashboard');
+            }
+
+            return redirect('/');
         }
 
         return back()->with('error', 'Invalid credentials.');

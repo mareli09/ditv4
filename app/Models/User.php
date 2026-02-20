@@ -24,6 +24,15 @@ class User extends Authenticatable
         'role',
         'is_active',
         'archived_at',
+        'last_name',
+        'first_name',
+        'middle_name',
+        'age',
+        'gender',
+        'address',
+        'barangay',
+        'phone',
+        'previously_joined'
     ];
 
     /**

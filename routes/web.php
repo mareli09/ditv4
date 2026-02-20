@@ -49,4 +49,19 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{user}', [ITUserController::class, 'destroy'])->name('destroy');
     });
 
+    Route::get('/community/dashboard', [\App\Http\Controllers\Community\CommunityDashboardController::class, 'index'])
+        ->name('community.dashboard');
+
+    Route::get('/community/activities', function() {
+        return view('community.activities');
+    })->name('community.activities');
+
+    Route::get('/community/my-activities', function() {
+        return view('community.my-activities');
+    })->name('community.my-activities');
+
+    Route::get('/community/profile', function() {
+        return view('community.profile');
+    })->name('community.profile');
+
 });
