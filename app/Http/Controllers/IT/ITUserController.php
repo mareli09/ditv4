@@ -65,11 +65,14 @@ class ITUserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email,' . $user->id,
+            'password' => 'nullable|min:6|confirmed',
             'role' => 'required|in:IT,CESO,Faculty,Student,Community',
         ]);
 
         if ($request->filled('password')) {
-            $validated['password'] = bcrypt($request->password);
+            $validated['password'] = bcrypt($validated['password']);
+        } else {
+            unset($validated['password']);
         }
 
         $user->update($validated);
