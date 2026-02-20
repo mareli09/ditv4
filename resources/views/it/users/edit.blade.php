@@ -89,7 +89,8 @@
                 <div class="col-md-6">
                     <label class="form-label fw-semibold">Account Status</label>
                     <div class="form-check mt-2">
-                        <input class="form-check-input" type="checkbox" name="is_active" id="isActive" value="1" {{ $user->is_active ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" name="is_active" id="isActive" value="1" {{ old('is_active', $user->is_active) ? 'checked' : '' }} onchange="document.getElementById('activeValue').value = this.checked ? 1 : 0">
+                        <input type="hidden" id="activeValue" name="is_active" value="{{ $user->is_active ? 1 : 0 }}">
                         <label class="form-check-label" for="isActive">
                             <i class="fas fa-check-circle text-success me-1"></i> Active
                         </label>

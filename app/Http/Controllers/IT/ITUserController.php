@@ -68,6 +68,7 @@ class ITUserController extends Controller
             'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|min:6|confirmed',
             'role' => 'required|in:IT,CESO,Faculty,Student,Community',
+            'is_active' => 'boolean'
         ]);
 
         if ($request->filled('password')) {
@@ -75,6 +76,9 @@ class ITUserController extends Controller
         } else {
             unset($validated['password']);
         }
+
+        // Ensure is_active is properly set (0 or 1)
+        $validated['is_active'] = $request->has('is_active') ? (bool)$request->input('is_active') : false;
 
         $user->update($validated);
 
