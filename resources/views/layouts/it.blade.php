@@ -9,6 +9,12 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
 <style>
+html, body { 
+    height: 100%;
+    margin: 0; 
+    padding: 0; 
+}
+
 body { background: #f4f6f8; }
 
 .header-bar {
@@ -18,14 +24,24 @@ body { background: #f4f6f8; }
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 65px;
+    flex-shrink: 0;
+}
+
+.layout-wrapper {
+    display: flex;
+    flex-wrap: nowrap;
+    height: calc(100vh - 65px);
+    width: 100%;
 }
 
 .sidebar {
     background: #0f172a;
     color: #e5e7eb;
-    min-height: calc(100vh - 65px);
     width: 250px;
     padding-top: 15px;
+    flex-shrink: 0;
+    overflow-y: auto;
 }
 
 .sidebar a {
@@ -40,7 +56,14 @@ body { background: #f4f6f8; }
 .sidebar a.active { background: #2563eb; color: white; }
 .sidebar a:hover { background: #1e293b; }
 
-.content { padding: 25px; }
+.content { 
+    padding: 25px;
+    flex: 1;
+    overflow-y: auto;
+    width: calc(100% - 250px);
+    background: #f4f6f8;
+}
+
 .stat-card { border-radius: 14px; }
 </style>
 </head>
@@ -62,7 +85,7 @@ body { background: #f4f6f8; }
     </div>
 </div>
 
-<div class="d-flex">
+<div class="layout-wrapper">
 
     <!-- SIDEBAR -->
     <div class="sidebar">

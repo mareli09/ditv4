@@ -14,8 +14,9 @@ class ITUserController extends Controller
             abort(403);
         }
 
-        $users = User::all();
-        return view('it.users', ['users' => $users]);
+        $users = User::whereNull('archived_at')->get();
+        $archivedUsers = User::whereNotNull('archived_at')->get();
+        return view('it.users', ['users' => $users, 'archivedUsers' => $archivedUsers]);
     }
 
     public function create()
@@ -106,8 +107,18 @@ class ITUserController extends Controller
             abort(403);
         }
 
-        $user->delete();
+        $user->update(['archived_at' => now()]);
         return back()->with('success', 'User archived!');
+    }
+
+    public function restore(User $user)
+    {
+        if (auth()->user()->role !== 'IT') {
+            abort(403);
+        }
+
+        $user->update(['archived_at' => null]);
+        return back()->with('success', 'User restored!');
     }
 
     public function import(Request $request)

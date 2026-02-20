@@ -125,7 +125,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="6" class="text-center text-muted py-4">No users found</td>
+                    <td colspan="6" class="text-center text-muted py-4">No active users found</td>
                 </tr>
                 @endforelse
             </tbody>
@@ -134,5 +134,51 @@
 
     </div>
 </div>
+
+<!-- ARCHIVED USERS SECTION -->
+@if($archivedUsers->count() > 0)
+<div class="card shadow-sm mt-4">
+    <div class="card-header bg-danger text-white">
+        <h5 class="mb-0"><i class="fas fa-archive me-2"></i> Archived Users ({{ $archivedUsers->count() }})</h5>
+    </div>
+    <div class="card-body table-responsive">
+
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Role</th>
+                    <th>Email</th>
+                    <th>Archived Date</th>
+                    <th class="text-end">Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach($archivedUsers as $user)
+                <tr class="table-secondary">
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $user->name }}</td>
+                    <td>{{ $user->role }}</td>
+                    <td>{{ $user->email }}</td>
+                    <td>{{ $user->archived_at->format('M d, Y @ H:i A') }}</td>
+                    <td class="text-end">
+                        <form action="{{ route('it.users.restore', $user->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit" class="btn btn-sm btn-outline-info" onclick="return confirm('Restore this user?')">
+                                <i class="fas fa-undo me-1"></i> Restore
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+
+        </table>
+
+    </div>
+</div>
+@endif
 
 @endsection
