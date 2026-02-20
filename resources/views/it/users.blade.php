@@ -108,18 +108,18 @@
                         @if($user->is_active)
                             <form action="{{ route('it.users.deactivate', $user->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Deactivate this user?')">Deactivate</button>
+                                <button type="submit" class="btn btn-sm btn-outline-warning" onclick="return confirm('Are you sure you want to deactivate this user?')">Deactivate</button>
                             </form>
                         @else
                             <form action="{{ route('it.users.activate', $user->id) }}" method="POST" style="display:inline;">
                                 @csrf
-                                <button type="submit" class="btn btn-sm btn-outline-success">Activate</button>
+                                <button type="submit" class="btn btn-sm btn-outline-success" onclick="return confirm('Activate this user?')">Activate</button>
                             </form>
                         @endif
                         <form action="{{ route('it.users.destroy', $user->id) }}" method="POST" style="display:inline;">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Archive this user?')">Archive</button>
+                            <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to archive this user? This action can be undone.')">Archive</button>
                         </form>
                     </td>
                 </tr>
@@ -180,5 +180,48 @@
     </div>
 </div>
 @endif
+
+<script>
+document.getElementById('filterBtn').addEventListener('click', function() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    const statusFilter = document.getElementById('statusFilter').value;
+    
+    // Filter active users table only (not archived)
+    const tables = document.querySelectorAll('.table');
+    const activeTable = tables[0]; // First table is active users
+    const activeRows = activeTable.querySelectorAll('tbody tr');
+    let visibleCount = 0;
+    
+    activeRows.forEach((row) => {
+        const nameCell = row.querySelector('td:nth-child(2)');
+        const emailCell = row.querySelector('td:nth-child(4)');
+        const statusCell = row.querySelector('td:nth-child(5)');
+        
+        if (!nameCell || !emailCell || !statusCell) return;
+        
+        const name = nameCell.textContent.toLowerCase();
+        const email = emailCell.textContent.toLowerCase();
+        const statusBadge = statusCell.querySelector('.badge')?.textContent || '';
+        const isActive = statusBadge.includes('Active') ? '1' : '0';
+        
+        let matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+        let matchesStatus = statusFilter === '' || isActive === statusFilter;
+        
+        if (matchesSearch && matchesStatus) {
+            row.style.display = '';
+            visibleCount++;
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+
+// Allow Enter key to trigger filter
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('filterBtn').click();
+    }
+});
+</script>
 
 @endsection

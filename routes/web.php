@@ -39,14 +39,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [ITUserController::class, 'index'])->name('index');
         Route::get('/create', [ITUserController::class, 'create'])->name('create');
         Route::post('/', [ITUserController::class, 'store'])->name('store');
+        Route::post('import', [ITUserController::class, 'import'])->name('import');
+        Route::get('sample-csv', [ITUserController::class, 'sampleCsv'])->name('sample-csv');
         Route::get('/{user}/edit', [ITUserController::class, 'edit'])->name('edit');
         Route::put('/{user}', [ITUserController::class, 'update'])->name('update');
         Route::post('/{user}/activate', [ITUserController::class, 'activate'])->name('activate');
         Route::post('/{user}/deactivate', [ITUserController::class, 'deactivate'])->name('deactivate');
         Route::post('/{user}/restore', [ITUserController::class, 'restore'])->name('restore');
         Route::delete('/{user}', [ITUserController::class, 'destroy'])->name('destroy');
-        Route::post('/import', [ITUserController::class, 'import'])->name('import');
-        Route::get('/sample-csv', [ITUserController::class, 'sampleCsv'])->name('sample-csv');
     });
 
 });

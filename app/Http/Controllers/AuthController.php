@@ -25,12 +25,17 @@ class AuthController extends Controller
                 'password' => $request->password
             ])
         ) {
+            $user = Auth::user();
+
+            // Check if user is archived or inactive
+            if ($user->archived_at !== null || !$user->is_active) {
+                Auth::logout();
+                return back()->with('error', 'This user account is inactive or archived. Contact administrator.');
+            }
 
             $request->session()->regenerate();
 
             // Role-based redirect
-            $user = Auth::user();
-
             if ($user->role === 'IT') {
                 return redirect()->route('it.dashboard');
             }
