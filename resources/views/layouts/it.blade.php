@@ -71,8 +71,8 @@ body { background: #f4f6f8; }
             <i class="fas fa-gauge me-2"></i> Dashboard
         </a>
 
-        <a href="{{ route('it.users') }}"
-           class="{{ request()->routeIs('it.users') ? 'active' : '' }}">
+        <a href="{{ route('it.users.index') }}"
+           class="{{ request()->routeIs('it.users.*') ? 'active' : '' }}">
             <i class="fas fa-users-cog me-2"></i> User Management
         </a>
     </div>

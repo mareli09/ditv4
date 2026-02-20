@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IT\ITDashboardController;
+use App\Http\Controllers\IT\ITUserController;
 
 
 Route::get('/', function () {
@@ -34,8 +35,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/it/dashboard', [ITDashboardController::class, 'index'])
         ->name('it.dashboard');
 
-    Route::get('/it/users', function () {
-        return "User Management Page";
-    })->name('it.users');
+    Route::prefix('it/users')->name('it.users.')->group(function () {
+        Route::get('/', [ITUserController::class, 'index'])->name('index');
+        Route::get('/create', [ITUserController::class, 'create'])->name('create');
+        Route::post('/', [ITUserController::class, 'store'])->name('store');
+        Route::get('/{user}/edit', [ITUserController::class, 'edit'])->name('edit');
+        Route::put('/{user}', [ITUserController::class, 'update'])->name('update');
+        Route::post('/{user}/activate', [ITUserController::class, 'activate'])->name('activate');
+        Route::post('/{user}/deactivate', [ITUserController::class, 'deactivate'])->name('deactivate');
+        Route::delete('/{user}', [ITUserController::class, 'destroy'])->name('destroy');
+        Route::post('/import', [ITUserController::class, 'import'])->name('import');
+        Route::get('/sample-csv', [ITUserController::class, 'sampleCsv'])->name('sample-csv');
+    });
 
 });
