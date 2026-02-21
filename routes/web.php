@@ -68,5 +68,21 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ceso/dashboard', [\App\Http\Controllers\CESO\CESODashboardController::class, 'index'])
         ->name('ceso.dashboard');
 
+    // CESO activities
+    Route::get('/ceso/activities/create', [\App\Http\Controllers\CESO\CESOActivityController::class, 'create'])
+        ->name('ceso.activities.create');
+
+    Route::post('/ceso/activities', [\App\Http\Controllers\CESO\CESOActivityController::class, 'store'])
+        ->name('ceso.activities.store');
+    
+    Route::get('/ceso/activities', [\App\Http\Controllers\CESO\CESOActivityController::class, 'index'])
+        ->name('ceso.activities.index');
+
+    Route::get('/ceso/activities/{activity}', [\App\Http\Controllers\CESO\CESOActivityController::class, 'show'])
+        ->name('ceso.activities.show');
+
+    Route::post('/ceso/activities/{activity}/feedback', [\App\Http\Controllers\CESO\CESOActivityController::class, 'feedback'])
+        ->name('ceso.activities.feedback');
+
 
 });

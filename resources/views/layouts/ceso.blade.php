@@ -38,10 +38,10 @@
 
 <div class="d-flex">
     <div class="sidebar">
-        <a href="{{ route('ceso.dashboard') }}" class="active">
+        <a href="{{ route('ceso.dashboard') }}" class="{{ request()->routeIs('ceso.dashboard') ? 'active' : '' }}">
             <i class="fas fa-chart-line me-2"></i> Dashboard
         </a>
-        <a href="#">
+        <a href="{{ route('ceso.activities.index') }}" class="{{ request()->routeIs('ceso.activities.*') ? 'active' : '' }}">
             <i class="fas fa-calendar-alt me-2"></i> Activities
         </a>
         <a href="#">
