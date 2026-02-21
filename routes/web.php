@@ -64,4 +64,9 @@ Route::middleware(['auth'])->group(function () {
         return view('community.profile');
     })->name('community.profile');
 
+    // CESO staff routes
+    Route::get('/ceso/dashboard', [\App\Http\Controllers\CESO\CESODashboardController::class, 'index'])
+        ->name('ceso.dashboard');
+
+
 });

@@ -15,25 +15,39 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::create([
-            'name' => 'IT Administrator',
-            'email' => 'itadmin@test.com',
-            'password' => bcrypt('password123'),
-            'role' => 'IT',
-            'is_active' => 1
-        ]);
+        User::updateOrCreate(
+            ['email' => 'itadmin@test.com'],
+            [
+                'name' => 'IT Administrator',
+                'password' => bcrypt('password123'),
+                'role' => 'IT',
+                'is_active' => 1,
+            ]
+        );
 
-        User::create([
-            'name' => 'Community User',
-            'email' => 'community@test.com',
-            'password' => bcrypt('password123'),
-            'role' => 'Community',
-            'is_active' => 1,
-            'first_name' => 'Sample',
-            'last_name' => 'Community',
-            'phone' => '09123456789',
-            'address' => 'Sample Address',
-            'barangay' => 'Sample Barangay'
-        ]);
+        User::updateOrCreate(
+            ['email' => 'community@test.com'],
+            [
+                'name' => 'Community User',
+                'password' => bcrypt('password123'),
+                'role' => 'Community',
+                'is_active' => 1,
+                'first_name' => 'Sample',
+                'last_name' => 'Community',
+                'phone' => '09123456789',
+                'address' => 'Sample Address',
+                'barangay' => 'Sample Barangay'
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'ceso@test.com'],
+            [
+                'name' => 'CESO Staff',
+                'password' => bcrypt('cesoPass123'),
+                'role' => 'CESO',
+                'is_active' => 1
+            ]
+        );
     }
 }

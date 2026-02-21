@@ -41,7 +41,7 @@ class AuthController extends Controller
             }
 
             if ($user->role === 'CESO') {
-                return redirect('/'); // Temporary: redirect to home
+                return redirect()->route('ceso.dashboard');
             }
 
             if ($user->role === 'Faculty') {
