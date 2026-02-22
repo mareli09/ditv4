@@ -11,7 +11,7 @@ class Activity extends Model
 
     protected $fillable = [
         'title','venue','start_date','end_date','start_time','end_time',
-        'conducted_by','fee','description','attachments','created_by'
+        'conducted_by','fee','description','attachments','created_by','archived_at'
     ];
 
     protected $casts = [
