@@ -121,4 +121,7 @@ Route::middleware(['auth'])->group(function () {
     // Community viewing activity details
     Route::get('/community/activities/{activity}', [CommunityActivityController::class, 'show'])->name('community.activities.show');
 
+    // Route for sentiment explanation
+    Route::post('/activities/{activity}/feedback/{feedback}/explain', [CESOActivityController::class, 'explainSentiment'])->name('ceso.activities.feedback.explain');
+
 });

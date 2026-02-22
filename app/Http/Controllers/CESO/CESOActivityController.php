@@ -326,4 +326,14 @@ class CESOActivityController extends Controller
 
         return redirect()->route('community.feedback.form')->with('success', 'Thank you for your feedback!');
     }
+
+    public function explainSentiment(Activity $activity, ActivityFeedback $feedback, SentimentService $sentimentService)
+    {
+        // Use the SentimentService to generate an explanation
+        $explanation = $sentimentService->explain($feedback->comment);
+
+        return response()->json([
+            'explanation' => $explanation,
+        ]);
+    }
 }

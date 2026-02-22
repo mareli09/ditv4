@@ -106,10 +106,44 @@
                             <strong>{{ $fb->user?->name ?? $fb->source ?? $fb->role ?? 'Anonymous' }}</strong>
                             <p class="mb-1 small text-muted">Rating: {{ $fb->rating ?? 'N/A' }}</p>
                             <p>{{ $fb->comment }}</p>
+                            <button class="btn btn-sm btn-outline-info explain-sentiment" data-feedback-id="{{ $fb->id }}">Explain Sentiment</button>
+                            <div class="sentiment-explanation mt-2" id="explanation-{{ $fb->id }}" style="display: none;"></div>
                         </div>
                     </div>
                 @endforeach
             </div>
+
+            @push('scripts')
+            <script>
+                document.querySelectorAll('.explain-sentiment').forEach(button => {
+                    button.addEventListener('click', function() {
+                        const feedbackId = this.getAttribute('data-feedback-id');
+                        const explanationDiv = document.getElementById(`explanation-${feedbackId}`);
+
+                        if (explanationDiv.style.display === 'none') {
+                            fetch(`{{ url('/activities/' . $activity->id . '/feedback') }}/${feedbackId}/explain`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                }
+                            })
+                            .then(response => response.json())
+                            .then(data => {
+                                explanationDiv.innerHTML = `<p>${data.explanation}</p>`;
+                                explanationDiv.style.display = 'block';
+                            })
+                            .catch(error => {
+                                explanationDiv.innerHTML = '<p class="text-danger">Failed to fetch explanation.</p>';
+                                explanationDiv.style.display = 'block';
+                            });
+                        } else {
+                            explanationDiv.style.display = 'none';
+                        }
+                    });
+                });
+            </script>
+            @endpush
 
             <h5>Feedback Results</h5>
             <div class="row g-3">

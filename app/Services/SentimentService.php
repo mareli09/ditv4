@@ -15,4 +15,14 @@ class SentimentService
 
         return trim($response->output[0]->content[0]->text);
     }
+
+    public function explain(string $feedback): string
+    {
+        $response = OpenAI::responses()->create([
+            'model' => 'gpt-4.1-mini',
+            'input' => "Explain why this feedback is classified as Positive, Neutral, or Negative:\n\n{$feedback}"
+        ]);
+
+        return trim($response->output[0]->content[0]->text);
+    }
 }
