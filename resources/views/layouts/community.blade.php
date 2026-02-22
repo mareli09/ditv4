@@ -237,19 +237,19 @@
 
         <!-- SIDEBAR -->
         <div class="sidebar">
-            <a href="{{ route('community.dashboard') }}" class="active">
+            <a href="{{ route('community.dashboard') }}" class="{{ request()->routeIs('community.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
 
-            <a href="{{ route('community.activities') }}">
+            <a href="{{ route('community.activities') }}" class="{{ request()->routeIs('community.activities') ? 'active' : '' }}">
                 <i class="fas fa-calendar-check"></i> Activities
             </a>
 
-            <a href="{{ route('community.my-activities') }}">
+            <a href="{{ route('community.my-activities') }}" class="{{ request()->routeIs('community.my-activities') ? 'active' : '' }}">
                 <i class="fas fa-user-check"></i> My Participation
             </a>
 
-            <a href="{{ route('community.profile') }}">
+            <a href="{{ route('community.profile') }}" class="{{ request()->routeIs('community.profile') ? 'active' : '' }}">
                 <i class="fas fa-user-cog"></i> Profile Settings
             </a>
         </div>
