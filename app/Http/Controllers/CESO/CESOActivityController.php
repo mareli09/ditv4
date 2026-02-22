@@ -264,7 +264,7 @@ class CESOActivityController extends Controller
         $sentimentCounts = ['Positive' => 0, 'Neutral' => 0, 'Negative' => 0];
 
         foreach ($feedback as $comment) {
-            $sentiment = $sentimentService->analyze($comment);
+            $sentiment = $sentimentService->analyze($comment) ?? 'Neutral'; // Default to Neutral if analysis fails
             $sentiments[] = [
                 'comment' => $comment,
                 'sentiment' => $sentiment,
@@ -276,11 +276,24 @@ class CESOActivityController extends Controller
             }
         }
 
+        // Generate analysis summary
+        $totalFeedback = array_sum($sentimentCounts);
+        $analysis = $totalFeedback > 0
+            ? sprintf(
+                'Out of %d feedback comments, %d were positive, %d were neutral, and %d were negative.',
+                $totalFeedback,
+                $sentimentCounts['Positive'],
+                $sentimentCounts['Neutral'],
+                $sentimentCounts['Negative']
+            )
+            : 'No feedback available for sentiment analysis.';
+
         // Pass analysis and sentiment counts to the view
         return view('ceso.activity_show', [
             'activity' => $activity,
             'sentiments' => $sentiments,
             'sentimentCounts' => $sentimentCounts,
+            'analysis' => $analysis,
         ]);
     }
 }
