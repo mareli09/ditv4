@@ -81,7 +81,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ceso/activities/archived', [\App\Http\Controllers\CESO\CESOActivityController::class, 'archivedIndex'])
         ->name('ceso.activities.archived');
 
-    Route::get('/ceso/activities/{activity}', [\App\Http\Controllers\CESO\CESOActivityController::class, 'show'])
+    Route::get('/ceso/activities/{activity}', [\App\Http\Controllers\CESO\CESOActivityController::class, 'analyzeFeedback'])
         ->name('ceso.activities.show');
 
     Route::get('/ceso/activities/{activity}/edit', [\App\Http\Controllers\CESO\CESOActivityController::class, 'edit'])
@@ -98,6 +98,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::post('/ceso/activities/{activity}/feedback', [\App\Http\Controllers\CESO\CESOActivityController::class, 'feedback'])
         ->name('ceso.activities.feedback');
+
+    Route::get('/ceso/activities/{activity}/analyze', [\App\Http\Controllers\CESO\CESOActivityController::class, 'analyzeFeedback'])
+        ->name('ceso.activities.analyze');
 
 
 });

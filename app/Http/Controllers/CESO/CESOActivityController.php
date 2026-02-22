@@ -7,6 +7,9 @@ use App\Models\Activity;
 use App\Models\ActivityFeedback;
 use App\Models\User;
 use Illuminate\Http\Request;
+use OpenAI\Client;
+use OpenAI\Laravel\Facades\OpenAI; 
+use App\Services\SentimentService;
 
 class CESOActivityController extends Controller
 {
@@ -208,8 +211,32 @@ class CESOActivityController extends Controller
     {
         if (auth()->user()->role !== 'CESO') abort(403);
 
-        $activity->load('feedback.user');
-        return view('ceso.activity_show', ['activity' => $activity]);
+        // Temporary feedback data
+        $feedback = [
+            [
+                'user' => 'John Doe',
+                'role' => 'Student',
+                'rating' => 5,
+                'comment' => 'The activity was very informative and engaging.'
+            ],
+            [
+                'user' => 'Jane Smith',
+                'role' => 'Faculty',
+                'rating' => 4,
+                'comment' => 'Well-organized but could use more interactive sessions.'
+            ],
+            [
+                'user' => 'Community Member',
+                'role' => 'Community',
+                'rating' => 5,
+                'comment' => 'Great initiative for the community!'
+            ]
+        ];
+
+        return view('ceso.activity_show', [
+            'activity' => $activity,
+            'feedback' => $feedback
+        ]);
     }
 
     public function feedback(Request $request, Activity $activity)
@@ -225,5 +252,35 @@ class CESOActivityController extends Controller
         $activity->feedback()->create($data);
 
         return back()->with('success', 'Thank you for your feedback.');
+    }
+
+    public function analyzeFeedback(Activity $activity, SentimentService $sentimentService)
+    {
+        // Fetch feedback data
+        $feedback = $activity->feedback()->pluck('comment')->toArray();
+
+        // Analyze each feedback comment
+        $sentiments = [];
+        $sentimentCounts = ['Positive' => 0, 'Neutral' => 0, 'Negative' => 0];
+
+        foreach ($feedback as $comment) {
+            $sentiment = $sentimentService->analyze($comment);
+            $sentiments[] = [
+                'comment' => $comment,
+                'sentiment' => $sentiment,
+            ];
+
+            // Increment sentiment counts
+            if (isset($sentimentCounts[$sentiment])) {
+                $sentimentCounts[$sentiment]++;
+            }
+        }
+
+        // Pass analysis and sentiment counts to the view
+        return view('ceso.activity_show', [
+            'activity' => $activity,
+            'sentiments' => $sentiments,
+            'sentimentCounts' => $sentimentCounts,
+        ]);
     }
 }

@@ -111,47 +111,51 @@
                 @endforeach
             </div>
 
-            <h6>Submit Feedback</h6>
-            <form method="POST" action="{{ route('ceso.activities.feedback', $activity->id) }}">
-                @csrf
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <label class="form-label">Your Role</label>
-                        <select name="role" class="form-select">
-                            <option value="">Select role</option>
-                            <option>IT</option>
-                            <option>CESO</option>
-                            <option>Faculty</option>
-                            <option>Student</option>
-                            <option>Community</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Source</label>
-                        <select name="source" class="form-select">
-                            <option value="staff">Staff</option>
-                            <option value="faculty">Faculty</option>
-                            <option value="student">Student</option>
-                            <option value="community">Community</option>
-                        </select>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label">Rating (0-5)</label>
-                        <input type="number" name="rating" min="0" max="5" class="form-control">
+            <h5>Feedback Results</h5>
+            <div class="row g-3">
+                @foreach($sentiments as $sentiment)
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <strong>{{ $sentiment['comment'] }}</strong>
+                            <p class="mb-1 small text-muted">Sentiment: {{ $sentiment['sentiment'] }}</p>
+                        </div>
                     </div>
                 </div>
+                @endforeach
+            </div>
 
-                <div class="mb-3 mt-3">
-                    <label class="form-label">Comment</label>
-                    <textarea name="comment" class="form-control" rows="3"></textarea>
+            <h5>Sentiment Analysis Results</h5>
+            <div class="card shadow-sm mb-4">
+                <div class="card-body">
+                    <p>{{ $analysis ?? 'Sentiment analysis is not available at the moment.' }}</p>
                 </div>
+            </div>
 
-                <button class="btn btn-primary">Submit Feedback</button>
-            </form>
+            <h5>Sentiment Chart</h5>
+            <canvas id="sentimentChart"></canvas>
 
+            <script>
+                // Dynamic chart data from the controller
+                const sentimentData = {
+                    labels: ['Positive', 'Neutral', 'Negative'],
+                    datasets: [{
+                        data: [
+                            {{ $sentimentCounts['Positive'] }},
+                            {{ $sentimentCounts['Neutral'] }},
+                            {{ $sentimentCounts['Negative'] }}
+                        ],
+                        backgroundColor: ['#198754', '#6c757d', '#dc3545']
+                    }]
+                };
+
+                new Chart(document.getElementById('sentimentChart'), {
+                    type: 'doughnut',
+                    data: sentimentData
+                });
+            </script>
         </div>
     </div>
 </div>
 @endsection
 
-        
