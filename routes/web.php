@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IT\ITDashboardController;
 use App\Http\Controllers\IT\ITUserController;
 use App\Http\Controllers\CESO\CESOActivityController;
+use App\Http\Controllers\CommunityActivityController;
 
 
 Route::get('/', function () {
@@ -52,11 +53,14 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/community/dashboard', [\App\Http\Controllers\Community\CommunityDashboardController::class, 'index'])
         ->name('community.dashboard');
-
+    /*
     Route::get('/community/activities', function() {
         return view('community.activities');
     })->name('community.activities');
-
+    */
+    Route::get('/community/activities', [CommunityActivityController::class, 'index'])
+    ->name('community.activities');
+    
     Route::get('/community/my-activities', function() {
         return view('community.my-activities');
     })->name('community.my-activities');
@@ -107,5 +111,14 @@ Route::middleware(['auth'])->group(function () {
     // Community feedback route
     Route::get('/community/feedback', [CESOActivityController::class, 'communityFeedbackForm'])->name('community.feedback.form');
     Route::post('/community/feedback', [CESOActivityController::class, 'submitCommunityFeedback'])->name('community.feedback.submit');
+
+    // Community joining activities
+    Route::post('/community/activities/{activity}/join', [CommunityActivityController::class, 'join'])->name('community.activities.join');
+
+    // Community submitting feedback
+    Route::post('/community/activities/{activity}/feedback', [CommunityActivityController::class, 'submitFeedback'])->name('community.activities.feedback');
+
+    // Community viewing activity details
+    Route::get('/community/activities/{activity}', [CommunityActivityController::class, 'show'])->name('community.activities.show');
 
 });
