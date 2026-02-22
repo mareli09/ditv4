@@ -58,4 +58,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function joinedActivities()
+    {
+        return $this->belongsToMany(Activity::class, 'activity_participants')
+                    ->withPivot('participant_type')
+                    ->withTimestamps();
+    }
 }

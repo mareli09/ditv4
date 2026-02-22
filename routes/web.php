@@ -61,9 +61,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/community/activities', [CommunityActivityController::class, 'index'])
     ->name('community.activities');
     
-    Route::get('/community/my-activities', function() {
-        return view('community.my-activities');
-    })->name('community.my-activities');
+    Route::get('/community/my-activities', [CommunityActivityController::class, 'myActivities'])
+        ->name('community.my-activities');
 
     Route::get('/community/profile', function() {
         return view('community.profile');
@@ -123,5 +122,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Route for sentiment explanation
     Route::post('/activities/{activity}/feedback/{feedback}/explain', [CESOActivityController::class, 'explainSentiment'])->name('ceso.activities.feedback.explain');
+
+    // Route for community's joined activities
+    Route::get('/community/my-activities', [CommunityActivityController::class, 'myActivities'])->name('community.my-activities');
 
 });

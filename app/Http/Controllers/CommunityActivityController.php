@@ -10,7 +10,13 @@ class CommunityActivityController extends Controller
 {
     public function index()
     {
-        $activities = Activity::whereNull('archived_at')->paginate(10);
+        $user = auth()->user();
+
+        // Fetch activities where the user has not submitted feedback
+        $activities = Activity::whereDoesntHave('feedback', function ($query) use ($user) {
+            $query->where('user_id', $user->id);
+        })->whereNull('archived_at')->paginate(10);
+
         return view('community.activities', compact('activities'));
     }
 
@@ -57,5 +63,13 @@ class CommunityActivityController extends Controller
         ]);
 
         return back()->with('success', 'Thank you for your feedback!');
+    }
+
+    public function myActivities()
+    {
+        $user = auth()->user();
+        $activities = $user->joinedActivities()->with('feedback')->get();
+
+        return view('community.my-activities', compact('activities'));
     }
 }
