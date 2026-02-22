@@ -69,17 +69,32 @@ Route::middleware(['auth'])->group(function () {
         ->name('ceso.dashboard');
 
     // CESO activities
+    Route::get('/ceso/activities', [\App\Http\Controllers\CESO\CESOActivityController::class, 'index'])
+        ->name('ceso.activities.index');
+
     Route::get('/ceso/activities/create', [\App\Http\Controllers\CESO\CESOActivityController::class, 'create'])
         ->name('ceso.activities.create');
 
     Route::post('/ceso/activities', [\App\Http\Controllers\CESO\CESOActivityController::class, 'store'])
         ->name('ceso.activities.store');
-    
-    Route::get('/ceso/activities', [\App\Http\Controllers\CESO\CESOActivityController::class, 'index'])
-        ->name('ceso.activities.index');
+
+    Route::get('/ceso/activities/archived', [\App\Http\Controllers\CESO\CESOActivityController::class, 'archivedIndex'])
+        ->name('ceso.activities.archived');
 
     Route::get('/ceso/activities/{activity}', [\App\Http\Controllers\CESO\CESOActivityController::class, 'show'])
         ->name('ceso.activities.show');
+
+    Route::get('/ceso/activities/{activity}/edit', [\App\Http\Controllers\CESO\CESOActivityController::class, 'edit'])
+        ->name('ceso.activities.edit');
+
+    Route::put('/ceso/activities/{activity}', [\App\Http\Controllers\CESO\CESOActivityController::class, 'update'])
+        ->name('ceso.activities.update');
+
+    Route::post('/ceso/activities/{activity}/archive', [\App\Http\Controllers\CESO\CESOActivityController::class, 'archive'])
+        ->name('ceso.activities.archive');
+
+    Route::post('/ceso/activities/{activity}/restore', [\App\Http\Controllers\CESO\CESOActivityController::class, 'restore'])
+        ->name('ceso.activities.restore');
 
     Route::post('/ceso/activities/{activity}/feedback', [\App\Http\Controllers\CESO\CESOActivityController::class, 'feedback'])
         ->name('ceso.activities.feedback');

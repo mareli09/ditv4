@@ -4,7 +4,25 @@
 
 @section('content')
 <div class="container-fluid">
-    <h3 class="fw-bold mb-3">{{ $activity->title }}</h3>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h3 class="fw-bold mb-0">{{ $activity->title }}</h3>
+        @if(auth()->user()?->role === 'CESO')
+            <div>
+                <a href="{{ route('ceso.activities.edit', $activity->id) }}" class="btn btn-sm btn-outline-primary">Edit Activity</a>
+                @if(is_null($activity->archived_at))
+                    <form method="POST" action="{{ route('ceso.activities.archive', $activity->id) }}" style="display:inline-block;" class="ms-2">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Archive this activity?')">Archive</button>
+                    </form>
+                @else
+                    <form method="POST" action="{{ route('ceso.activities.restore', $activity->id) }}" style="display:inline-block;" class="ms-2">
+                        @csrf
+                        <button type="submit" class="btn btn-sm btn-outline-success" onclick="return confirm('Restore this activity?')">Restore</button>
+                    </form>
+                @endif
+            </div>
+        @endif
+    </div>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -34,7 +52,30 @@
                 <div class="col-12 mt-3">
                     <h5>Invited Participants</h5>
                     <div class="label-value">
-                        <p class="mb-0">(Invited lists not implemented yet)</p>
+                        @php
+                            $participantsByType = $activity->participants->groupBy('participant_type');
+                        @endphp
+
+                        @if($participantsByType->isNotEmpty())
+                            @foreach(['faculty' => 'Faculty', 'staff' => 'Staff', 'student' => 'Student', 'community' => 'Community', 'other' => 'Other'] as $type => $label)
+                                @if(isset($participantsByType[$type]))
+                                    <h6 class="mt-2">{{ $label }}:</h6>
+                                    <ul class="mb-2">
+                                        @foreach($participantsByType[$type] as $participant)
+                                            <li>
+                                                @if($participant->user_id && $participant->user)
+                                                    {{ $participant->user->name }}
+                                                @else
+                                                    {{ $participant->name }}
+                                                @endif
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                @endif
+                            @endforeach
+                        @else
+                            <p class="mb-0">No invited participants</p>
+                        @endif
                     </div>
                 </div>
 
@@ -112,3 +153,5 @@
     </div>
 </div>
 @endsection
+
+        

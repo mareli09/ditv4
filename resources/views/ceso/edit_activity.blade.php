@@ -1,11 +1,11 @@
 @extends('layouts.ceso')
 
-@section('title', 'Create Activity - CESO')
+@section('title', 'Edit Activity - CESO')
 
 @section('content')
 
 <div class="container-fluid">
-    <h3 class="fw-bold mb-3">Create Activity</h3>
+    <h3 class="fw-bold mb-3">Edit Activity</h3>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
@@ -14,43 +14,44 @@
     <div class="card shadow-sm">
         <div class="card-body">
 
-            <form method="POST" action="{{ route('ceso.activities.store') }}" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('ceso.activities.update', $activity->id) }}" enctype="multipart/form-data">
                 @csrf
+                @method('PUT')
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-6">
                         <label class="form-label">Activity Title</label>
-                        <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title') }}">
+                        <input type="text" name="title" class="form-control @error('title') is-invalid @enderror" value="{{ old('title', $activity->title) }}">
                         @error('title')<div class="invalid-feedback">{{ $message }}</div>@enderror
                     </div>
                     <div class="col-md-6">
                         <label class="form-label">Venue</label>
-                        <input type="text" name="venue" class="form-control" value="{{ old('venue') }}">
+                        <input type="text" name="venue" class="form-control" value="{{ old('venue', $activity->venue) }}">
                     </div>
                 </div>
 
                 <div class="row g-3 mb-3">
                     <div class="col-md-3">
                         <label class="form-label">Start Date</label>
-                        <input type="date" name="start_date" class="form-control" value="{{ old('start_date') }}">
+                        <input type="date" name="start_date" class="form-control" value="{{ old('start_date', optional($activity->start_date)->format('Y-m-d')) }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">End Date</label>
-                        <input type="date" name="end_date" class="form-control" value="{{ old('end_date') }}">
+                        <input type="date" name="end_date" class="form-control" value="{{ old('end_date', optional($activity->end_date)->format('Y-m-d')) }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">Start Time</label>
-                        <input type="time" name="start_time" class="form-control" value="{{ old('start_time') }}">
+                        <input type="time" name="start_time" class="form-control" value="{{ old('start_time', $activity->start_time) }}">
                     </div>
                     <div class="col-md-3">
                         <label class="form-label">End Time</label>
-                        <input type="time" name="end_time" class="form-control" value="{{ old('end_time') }}">
+                        <input type="time" name="end_time" class="form-control" value="{{ old('end_time', $activity->end_time) }}">
                     </div>
                 </div>
 
                 <div class="mb-3">
                     <label class="form-label">Conducted By</label>
-                    <input type="text" name="conducted_by" class="form-control" value="{{ old('conducted_by') }}">
+                    <input type="text" name="conducted_by" class="form-control" value="{{ old('conducted_by', $activity->conducted_by) }}">
                 </div>
 
                 <h5 class="mt-4">Invited Participants</h5>
@@ -114,7 +115,7 @@
 
                 <div class="mt-3 mb-3">
                     <label class="form-label">Fee / Expenses (₱)</label>
-                    <input type="number" name="fee" class="form-control" value="{{ old('fee') }}">
+                    <input type="number" name="fee" class="form-control" value="{{ old('fee', $activity->fee) }}">
                 </div>
 
                 <div class="mb-3">
@@ -124,10 +125,10 @@
 
                 <div class="mb-4">
                     <label class="form-label">Description</label>
-                    <textarea name="description" class="form-control" rows="4">{{ old('description') }}</textarea>
+                    <textarea name="description" class="form-control" rows="4">{{ old('description', $activity->description) }}</textarea>
                 </div>
 
-                <button class="btn btn-primary w-100">Submit Activity</button>
+                <button class="btn btn-primary w-100">Update Activity</button>
 
                 <!-- Hidden container for participant data -->
                 <div id="participantsData" style="display: none;"></div>
@@ -147,6 +148,20 @@ const communityData = @json($community);
 
 // Participants array to track added participants
 let participantsArray = [];
+
+// Seed existing participants from activity
+const existingParticipants = @json($activity->participants->map(function($p){
+    return [
+        'id' => $p->user_id ? $p->user_id : ('other_' . uniqid()),
+        'name' => $p->user?->name ?? $p->name,
+        'type' => $p->participant_type
+    ];
+}));
+
+if (existingParticipants && existingParticipants.length) {
+    participantsArray = existingParticipants;
+    // ensure hidden inputs are created
+}
 
 // Handle participant type change
 document.getElementById('participantType').addEventListener('change', function() {
@@ -341,6 +356,9 @@ document.getElementById('personSelect').addEventListener('keyup', function(e) {
 document.getElementById('otherName').addEventListener('keyup', function(e) {
     if (e.key === 'Enter') addParticipant();
 });
+
+// Initialize display with existing participants
+updateParticipantsDisplay();
 </script>
 
 @endsection

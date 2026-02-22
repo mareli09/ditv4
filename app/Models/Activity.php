@@ -18,10 +18,16 @@ class Activity extends Model
         'start_date' => 'date',
         'end_date' => 'date',
         'attachments' => 'array',
+        'archived_at' => 'datetime',
     ];
 
     public function feedback()
     {
         return $this->hasMany(ActivityFeedback::class);
+    }
+
+    public function participants()
+    {
+        return $this->hasMany(ActivityParticipant::class);
     }
 }
