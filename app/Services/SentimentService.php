@@ -23,6 +23,8 @@ class SentimentService
             'input' => "Explain why this feedback is classified as Positive, Neutral, or Negative:\n\n{$feedback}"
         ]);
 
-        return trim($response->output[0]->content[0]->text);
+        $text = $response->output[0]->content[0]->text ?? null;
+
+        return trim($text);
     }
 }
