@@ -134,26 +134,47 @@
 
             <h5>Sentiment Chart</h5>
             <canvas id="sentimentChart"></canvas>
-
+            @push('scripts')
             <script>
                 // Dynamic chart data from the controller
                 const sentimentData = {
                     labels: ['Positive', 'Neutral', 'Negative'],
                     datasets: [{
                         data: [
-                            {{ $sentimentCounts['Positive'] }},
-                            {{ $sentimentCounts['Neutral'] }},
-                            {{ $sentimentCounts['Negative'] }}
+                            {{ $sentimentCounts['Positive'] ?? 0 }},
+                            {{ $sentimentCounts['Neutral'] ?? 0 }},
+                            {{ $sentimentCounts['Negative'] ?? 0 }}
                         ],
-                        backgroundColor: ['#198754', '#6c757d', '#dc3545']
+                        backgroundColor: ['#198754', '#6c757d', '#dc3545'],
+                        hoverBackgroundColor: ['#145a32', '#495057', '#a71d2a']
                     }]
                 };
 
-                new Chart(document.getElementById('sentimentChart'), {
+                const config = {
                     type: 'doughnut',
-                    data: sentimentData
-                });
+                    data: sentimentData,
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const label = context.label || '';
+                                        const value = context.raw || 0;
+                                        return `${label}: ${value}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                };
+
+                new Chart(document.getElementById('sentimentChart'), config);
             </script>
+            @endpush
         </div>
     </div>
 </div>

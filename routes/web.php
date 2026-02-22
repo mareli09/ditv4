@@ -3,6 +3,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IT\ITDashboardController;
 use App\Http\Controllers\IT\ITUserController;
+use App\Http\Controllers\CESO\CESOActivityController;
 
 
 Route::get('/', function () {
@@ -102,5 +103,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/ceso/activities/{activity}/analyze', [\App\Http\Controllers\CESO\CESOActivityController::class, 'analyzeFeedback'])
         ->name('ceso.activities.analyze');
 
+
+    // Community feedback route
+    Route::get('/community/feedback', [CESOActivityController::class, 'communityFeedbackForm'])->name('community.feedback.form');
+    Route::post('/community/feedback', [CESOActivityController::class, 'submitCommunityFeedback'])->name('community.feedback.submit');
 
 });

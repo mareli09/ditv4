@@ -296,4 +296,34 @@ class CESOActivityController extends Controller
             'analysis' => $analysis,
         ]);
     }
+
+    public function communityFeedbackForm()
+    {
+        return view('community.feedback_form');
+    }
+
+    public function submitCommunityFeedback(Request $request)
+    {
+        $validated = $request->validate([
+            'activity_id' => 'required|exists:activities,id',
+            'role' => 'nullable|string',
+            'source' => 'nullable|string',
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:1000',
+        ]);
+
+        // Check if the user has already submitted feedback for this activity
+        $existingFeedback = ActivityFeedback::where('activity_id', $validated['activity_id'])
+            ->where('source', $validated['source'])
+            ->first();
+
+        if ($existingFeedback) {
+            return back()->withErrors(['You have already submitted feedback for this activity.']);
+        }
+
+        // Save feedback
+        ActivityFeedback::create($validated);
+
+        return redirect()->route('community.feedback.form')->with('success', 'Thank you for your feedback!');
+    }
 }
