@@ -3,6 +3,12 @@
 @section('title', $activity->title)
 
 @section('content')
+<style>
+    .badge-light-danger {
+        background-color: #f8d7da;
+        color: #721c24;
+    }
+</style>
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h3 class="fw-bold mb-0">{{ $activity->title }}</h3>
@@ -165,6 +171,139 @@
                     <p>{{ $analysis ?? 'Sentiment analysis is not available at the moment.' }}</p>
                 </div>
             </div>
+
+            {{-- DECISION SUPPORT INSIGHTS --}}
+            <h5><i class="fas fa-lightbulb me-2"></i>Decision Support & Insights</h5>
+            <div class="card shadow-sm mb-4" style="border-left: 4px solid #2563eb;">
+                <div class="card-body">
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6 class="text-muted small">Effectiveness Score</h6>
+                                <div style="font-size: 2.5rem; font-weight: bold; color: 
+                                    @if($insights['effectiveness_score'] >= 80) #28a745
+                                    @elseif($insights['effectiveness_score'] >= 60) #ffc107
+                                    @else #dc3545
+                                    @endif;">
+                                    {{ $insights['effectiveness_score'] }}%
+                                </div>
+                                <small class="text-muted">Overall Activity Performance</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6 class="text-muted small">Overall Performance</h6>
+                                <div style="font-size: 1.8rem; font-weight: bold;">
+                                    <span class="badge 
+                                        @if($insights['overall_performance'] === 'Excellent') bg-success
+                                        @elseif($insights['overall_performance'] === 'Good') bg-info
+                                        @elseif($insights['overall_performance'] === 'Fair') bg-warning
+                                        @else bg-danger
+                                        @endif">
+                                        {{ $insights['overall_performance'] }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <h6 class="text-muted small">Sentiment Distribution</h6>
+                                <div class="d-flex gap-2 justify-content-center mt-2">
+                                    <div>
+                                        <span class="badge bg-success">{{ $insights['sentiment_distribution']['positive'] }}%</span>
+                                        <small class="d-block text-muted">Positive</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-secondary">{{ $insights['sentiment_distribution']['neutral'] }}%</span>
+                                        <small class="d-block text-muted">Neutral</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-danger">{{ $insights['sentiment_distribution']['negative'] }}%</span>
+                                        <small class="d-block text-muted">Negative</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-primary mb-3"><i class="fas fa-search me-2"></i>Key Findings</h6>
+                            @if(!empty($insights['key_findings']))
+                                <ul class="list-unstyled">
+                                    @foreach($insights['key_findings'] as $finding)
+                                        <li class="mb-2">
+                                            <i class="fas fa-check-circle text-info me-2"></i>
+                                            {{ $finding }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-muted small">No findings available.</p>
+                            @endif
+                        </div>
+
+                        <div class="col-md-6">
+                            <h6 class="fw-bold text-success mb-3"><i class="fas fa-tasks me-2"></i>Recommendations</h6>
+                            @if(!empty($insights['recommendations']))
+                                <ul class="list-unstyled">
+                                    @foreach($insights['recommendations'] as $rec)
+                                        <li class="mb-2" style="font-size: 0.95rem;">
+                                            {{ $rec }}
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                <p class="text-muted small">No recommendations available.</p>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {{-- PARTICIPANT-SPECIFIC IMPROVEMENTS --}}
+            @if(!empty($insights['participant_improvements']))
+            <h5 class="mt-4"><i class="fas fa-users-cog me-2"></i>Participant-Specific Improvements</h5>
+            <div class="row g-3">
+                @foreach($insights['participant_improvements'] as $role => $data)
+                <div class="col-md-6">
+                    <div class="card shadow-sm" style="border-top: 3px solid #2563eb;">
+                        <div class="card-header bg-light">
+                            <h6 class="mb-0">
+                                <i class="fas fa-user-circle me-2"></i>
+                                {{ ucfirst($role) }} 
+                                <span class="badge bg-warning ms-2">{{ $data['low_rating_count'] }}/{{ $data['total_feedback'] }} Low Ratings</span>
+                            </h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="mb-3">
+                                <h7 class="text-muted small fw-bold mb-2">Common Issues Reported:</h7>
+                                <div>
+                                    @foreach($data['common_issues'] as $issue)
+                                        <span class="badge badge-light-danger me-2 mb-1 px-2 py-1">{{ ucwords($issue) }}</span>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <div>
+                                <h7 class="text-muted small fw-bold mb-2">Specific Improvements:</h7>
+                                <ul class="list-unstyled mb-0">
+                                    @foreach($data['specific_improvements'] as $improvement)
+                                        <li class="mb-2">
+                                            <span class="badge bg-success me-2">✓</span>
+                                            <span style="font-size: 0.9rem;">{{ $improvement }}</span>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+            @endif
 
             <h5>Sentiment Chart</h5>
             <canvas id="sentimentChart"></canvas>
