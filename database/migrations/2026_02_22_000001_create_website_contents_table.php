@@ -16,6 +16,9 @@ class CreateWebsiteContentsTable extends Migration
             $table->text('about_description')->nullable();
             $table->text('mission')->nullable();
             $table->text('vision')->nullable();
+            $table->text('privacy_policy')->nullable();
+            $table->text('terms_of_service')->nullable();
+            $table->text('accessibility')->nullable();
             $table->timestamps();
         });
     }

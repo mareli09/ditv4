@@ -140,4 +140,20 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/ceso/website/cta', [WebsiteContentController::class, 'updateCTA'])->name('ceso.website.cta.update');
     Route::put('/ceso/website/contact', [WebsiteContentController::class, 'updateContact'])->name('ceso.website.contact.update');
     Route::put('/ceso/website/footer', [WebsiteContentController::class, 'updateFooter'])->name('ceso.website.footer.update');
+
+    Route::get('/create-test-table', function () {
+        \Illuminate\Support\Facades\DB::statement('CREATE TABLE IF NOT EXISTS website_contents (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            `key` VARCHAR(255) UNIQUE,
+            `value` TEXT,
+            carousel_images JSON,
+            about_description TEXT,
+            mission TEXT,
+            vision TEXT,
+            created_at TIMESTAMP NULL DEFAULT NULL,
+            updated_at TIMESTAMP NULL DEFAULT NULL
+        );');
+
+        return 'Test table created successfully.';
+    });
 });

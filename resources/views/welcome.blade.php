@@ -5,18 +5,35 @@
 @section('content')
 
 <!-- HERO CAROUSEL -->
+<style>
+    #heroCarousel {
+        background-color: #000;
+    }
+    .carousel-inner {
+        max-height: 500px;
+    }
+    .carousel-item {
+        height: 500px;
+        background-color: #000;
+    }
+    .carousel-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+</style>
 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
 
     <div class="carousel-indicators">
-        @foreach($contents['carousel_images'] ?? [] as $index => $image)
+        @foreach(json_decode($contents['carousel_images'] ?? '[]') as $index => $image)
             <button data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></button>
         @endforeach
     </div>
 
     <div class="carousel-inner">
-        @foreach($contents['carousel_images'] ?? [] as $index => $image)
+        @foreach(json_decode($contents['carousel_images'] ?? '[]') as $index => $image)
             <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
-                <img src="{{ $image }}" class="d-block w-100" alt="CESO Activity">
+                <img src="{{ str_starts_with($image, 'http') ? $image : asset('storage/' . $image) }}" alt="CESO Activity">
             </div>
         @endforeach
     </div>
@@ -73,11 +90,11 @@
 <h3 class="fw-bold mb-3">Latest News</h3>
 
 <ul class="list-unstyled">
-@foreach([1,2,3] as $news)
+@foreach(json_decode($contents['latest_news'] ?? '[]') as $news)
 <li class="d-flex mb-3">
-    <img src="https://picsum.photos/100?{{ $news }}" class="me-3 rounded">
+    <img src="{{ $news->image }}" class="me-3 rounded">
     <p class="mb-0">
-        Sample CESO announcement {{ $news }}
+        {{ $news->text }}
     </p>
 </li>
 @endforeach
@@ -88,12 +105,12 @@
 
 <div class="col-md-6">
 <div class="bg-light p-4 rounded text-center h-100">
-<h3 class="fw-bold">Want to be part of the community?</h3>
+<h3 class="fw-bold">{{ $contents['cta_heading'] ?? 'Want to be part of the community?' }}</h3>
 <p class="text-muted">
-Join our extension programs and make a difference.
+    {{ $contents['cta_description'] ?? 'Join our extension programs and make a difference.' }}
 </p>
 <a href="{{ route('community.register') }}" class="btn btn-primary mt-3">
-Join Us
+    {{ $contents['cta_button_text'] ?? 'Join Us' }}
 </a>
 </div>
 </div>
@@ -125,9 +142,9 @@ Join Us
 <div class="col-md-6">
 <div class="bg-white p-4 rounded h-100">
 <h3 class="fw-bold mb-3">Get in Touch</h3>
-<p><strong>Email:</strong> ceso@example.edu.ph</p>
-<p><strong>Contact:</strong> +63 900 000 0000</p>
-<p><strong>Address:</strong> Sample City, Philippines</p>
+<p><strong>Email:</strong> {{ $contents['contact_email'] ?? 'ceso@example.edu.ph' }}</p>
+<p><strong>Contact:</strong> {{ $contents['contact_number'] ?? '+63 900 000 0000' }}</p>
+<p><strong>Address:</strong> {{ $contents['contact_address'] ?? 'Sample City, Philippines' }}</p>
 </div>
 </div>
 

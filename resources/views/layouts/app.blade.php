@@ -112,20 +112,39 @@
     <footer class="bg-primary text-white text-center py-4">
 
         <div class="mb-3">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            @if(!empty($contents['facebook_url'] ?? null))
+                <a href="{{ $contents['facebook_url'] }}" class="social-icon text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+            @endif
+            @if(!empty($contents['instagram_url'] ?? null))
+                <a href="{{ $contents['instagram_url'] }}" class="social-icon text-white mx-2"><i class="fab fa-instagram"></i></a>
+            @endif
+            @if(!empty($contents['youtube_url'] ?? null))
+                <a href="{{ $contents['youtube_url'] }}" class="social-icon text-white mx-2"><i class="fab fa-youtube"></i></a>
+            @endif
         </div>
 
         <div class="mb-2">
-            <a href="#" class="text-white mx-2">Privacy Policy</a>
-            <a href="#" class="text-white mx-2">Terms of Service</a>
-            <a href="#" class="text-white mx-2">Accessibility</a>
+            @if(!empty($contents['privacy_policy'] ?? null))
+                <a href="#" class="text-white mx-2" title="{{ $contents['privacy_policy'] }}">Privacy Policy</a>
+            @else
+                <a href="#" class="text-white mx-2">Privacy Policy</a>
+            @endif
+            
+            @if(!empty($contents['terms_of_service'] ?? null))
+                <a href="#" class="text-white mx-2" title="{{ $contents['terms_of_service'] }}">Terms of Service</a>
+            @else
+                <a href="#" class="text-white mx-2">Terms of Service</a>
+            @endif
+            
+            @if(!empty($contents['accessibility'] ?? null))
+                <a href="#" class="text-white mx-2" title="{{ $contents['accessibility'] }}">Accessibility</a>
+            @else
+                <a href="#" class="text-white mx-2">Accessibility</a>
+            @endif
         </div>
 
         <div class="small">
-            © {{ date('Y') }} Community Extension Services Office. All rights reserved.
+            {{ $contents['footer_copyright'] ?? '© ' . date('Y') . ' Community Extension Services Office. All rights reserved.' }}
         </div>
 
     </footer>
