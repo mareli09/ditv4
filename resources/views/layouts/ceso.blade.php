@@ -84,8 +84,9 @@
                 class="{{ request()->routeIs('ceso.activities.*') ? 'active' : '' }}">
                 <i class="fas fa-calendar-alt me-2"></i> Activities
             </a>
-            <a href="#">
-                <i class="fas fa-folder-open me-2"></i> Projects
+            <a href="{{ route('ceso.projects.index') }}"
+                class="{{ request()->routeIs('ceso.projects.*') ? 'active' : '' }}">
+                <i class="fas fa-diagram-project me-2"></i> Projects
             </a>
             <a href="#">
                 <i class="fas fa-bullhorn me-2"></i> Announcements

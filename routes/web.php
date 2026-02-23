@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\IT\ITDashboardController;
 use App\Http\Controllers\IT\ITUserController;
 use App\Http\Controllers\CESO\CESOActivityController;
+use App\Http\Controllers\CESO\ProjectController;
 use App\Http\Controllers\CommunityActivityController;
 use App\Http\Controllers\WebsiteContentController;
 
@@ -107,6 +108,34 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/ceso/activities/{activity}/analyze', [\App\Http\Controllers\CESO\CESOActivityController::class, 'analyzeFeedback'])
         ->name('ceso.activities.analyze');
+
+    // CESO projects
+    Route::get('/ceso/projects', [\App\Http\Controllers\CESO\ProjectController::class, 'index'])
+        ->name('ceso.projects.index');
+
+    Route::get('/ceso/projects/create', [\App\Http\Controllers\CESO\ProjectController::class, 'create'])
+        ->name('ceso.projects.create');
+
+    Route::post('/ceso/projects', [\App\Http\Controllers\CESO\ProjectController::class, 'store'])
+        ->name('ceso.projects.store');
+
+    Route::get('/ceso/projects/archived', [\App\Http\Controllers\CESO\ProjectController::class, 'archivedIndex'])
+        ->name('ceso.projects.archived');
+
+    Route::get('/ceso/projects/{project}', [\App\Http\Controllers\CESO\ProjectController::class, 'show'])
+        ->name('ceso.projects.show');
+
+    Route::get('/ceso/projects/{project}/edit', [\App\Http\Controllers\CESO\ProjectController::class, 'edit'])
+        ->name('ceso.projects.edit');
+
+    Route::put('/ceso/projects/{project}', [\App\Http\Controllers\CESO\ProjectController::class, 'update'])
+        ->name('ceso.projects.update');
+
+    Route::post('/ceso/projects/{project}/archive', [\App\Http\Controllers\CESO\ProjectController::class, 'archive'])
+        ->name('ceso.projects.archive');
+
+    Route::post('/ceso/projects/{project}/restore', [\App\Http\Controllers\CESO\ProjectController::class, 'restore'])
+        ->name('ceso.projects.restore');
 
 
     // Community feedback route
