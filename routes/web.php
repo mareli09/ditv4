@@ -5,10 +5,12 @@ use App\Http\Controllers\IT\ITDashboardController;
 use App\Http\Controllers\IT\ITUserController;
 use App\Http\Controllers\CESO\CESOActivityController;
 use App\Http\Controllers\CommunityActivityController;
+use App\Http\Controllers\WebsiteContentController;
 
 
 Route::get('/', function () {
-    return view('welcome');
+    $contents = DB::table('website_contents')->pluck('value', 'key');
+    return view('welcome', compact('contents'));
 })->name('home');
 
 Route::post('/contact', function () {
@@ -59,12 +61,12 @@ Route::middleware(['auth'])->group(function () {
     })->name('community.activities');
     */
     Route::get('/community/activities', [CommunityActivityController::class, 'index'])
-    ->name('community.activities');
-    
+        ->name('community.activities');
+
     Route::get('/community/my-activities', [CommunityActivityController::class, 'myActivities'])
         ->name('community.my-activities');
 
-    Route::get('/community/profile', function() {
+    Route::get('/community/profile', function () {
         return view('community.profile');
     })->name('community.profile');
 
@@ -126,4 +128,16 @@ Route::middleware(['auth'])->group(function () {
     // Route for community's joined activities
     Route::get('/community/my-activities', [CommunityActivityController::class, 'myActivities'])->name('community.my-activities');
 
+    // Website Content Management
+    Route::get('/ceso/website', [WebsiteContentController::class, 'index'])
+        ->name('ceso.website.index');
+
+    Route::put('/ceso/website', [WebsiteContentController::class, 'update'])
+        ->name('ceso.website.update');
+    Route::put('/ceso/website/hero', [WebsiteContentController::class, 'updateHero'])->name('ceso.website.hero.update');
+    Route::put('/ceso/website/about', [WebsiteContentController::class, 'updateAbout'])->name('ceso.website.about.update');
+    Route::put('/ceso/website/news', [WebsiteContentController::class, 'updateNews'])->name('ceso.website.news.update');
+    Route::put('/ceso/website/cta', [WebsiteContentController::class, 'updateCTA'])->name('ceso.website.cta.update');
+    Route::put('/ceso/website/contact', [WebsiteContentController::class, 'updateContact'])->name('ceso.website.contact.update');
+    Route::put('/ceso/website/footer', [WebsiteContentController::class, 'updateFooter'])->name('ceso.website.footer.update');
 });

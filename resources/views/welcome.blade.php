@@ -8,21 +8,17 @@
 <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel">
 
     <div class="carousel-indicators">
-        <button data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
-        <button data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
-        <button data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        @foreach($contents['carousel_images'] ?? [] as $index => $image)
+            <button data-bs-target="#heroCarousel" data-bs-slide-to="{{ $index }}" class="{{ $index === 0 ? 'active' : '' }}"></button>
+        @endforeach
     </div>
 
     <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img src="https://picsum.photos/1200/400?1" class="d-block w-100" alt="CESO Activity">
-        </div>
-        <div class="carousel-item">
-            <img src="https://picsum.photos/1200/400?2" class="d-block w-100" alt="Community Program">
-        </div>
-        <div class="carousel-item">
-            <img src="https://picsum.photos/1200/400?3" class="d-block w-100" alt="Outreach Event">
-        </div>
+        @foreach($contents['carousel_images'] ?? [] as $index => $image)
+            <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
+                <img src="{{ $image }}" class="d-block w-100" alt="CESO Activity">
+            </div>
+        @endforeach
     </div>
 
     <button class="carousel-control-prev" data-bs-target="#heroCarousel" data-bs-slide="prev">
@@ -40,9 +36,7 @@
 
 <h2 class="fw-bold mb-3">About CESO</h2>
 <p class="mb-4">
-The Community Extension Services Office (CESO) is committed to fostering
-meaningful partnerships and sustainable community development through
-education, outreach, and service.
+    {{ $contents['about_description'] ?? 'Default about description' }}
 </p>
 
 <div class="row g-3">
@@ -50,8 +44,7 @@ education, outreach, and service.
         <div class="bg-light text-dark p-4 rounded">
             <h4 class="fw-bold">Mission</h4>
             <p>
-                To empower communities through inclusive, innovative,
-                and sustainable extension programs.
+                {{ $contents['mission'] ?? 'Default mission' }}
             </p>
         </div>
     </div>
@@ -60,8 +53,7 @@ education, outreach, and service.
         <div class="bg-light text-dark p-4 rounded">
             <h4 class="fw-bold">Vision</h4>
             <p>
-                A socially responsible institution leading transformative
-                community engagement.
+                {{ $contents['vision'] ?? 'Default vision' }}
             </p>
         </div>
     </div>
