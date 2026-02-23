@@ -79,4 +79,41 @@
     </div>
 </div>
 
+<!-- RECENT ANNOUNCEMENTS -->
+<div class="row g-4 mt-2">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="fw-bold mb-0">Recent Announcements</h5>
+                <a href="{{ route('announcements.index') }}" class="btn btn-sm btn-primary">View All</a>
+            </div>
+            <div class="card-body">
+                @php
+                    $recentAnnouncements = \App\Models\Announcement::published()
+                        ->orderBy('published_at', 'desc')
+                        ->limit(5)
+                        ->get();
+                @endphp
+
+                @if($recentAnnouncements->count())
+                    <div class="list-group list-group-flush">
+                        @foreach($recentAnnouncements as $announcement)
+                        <a href="{{ route('announcements.show', $announcement->id) }}" class="list-group-item list-group-item-action py-3">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-bold">{{ $announcement->title }}</h6>
+                                    <p class="text-muted small mb-0">{{ Str::limit($announcement->content, 100, '...') }}</p>
+                                </div>
+                                <small class="text-muted ms-2">{{ $announcement->published_at->format('M d') }}</small>
+                            </div>
+                        </a>
+                        @endforeach
+                    </div>
+                @else
+                    <p class="text-muted text-center py-4">No announcements yet</p>
+                @endif
+            </div>
+        </div>
+    </div>
+
 @endsection

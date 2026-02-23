@@ -88,7 +88,8 @@
                 class="{{ request()->routeIs('ceso.projects.*') ? 'active' : '' }}">
                 <i class="fas fa-diagram-project me-2"></i> Projects
             </a>
-            <a href="#">
+            <a href="{{ route('ceso.announcements.index') }}"
+                class="{{ request()->routeIs('ceso.announcements.*') ? 'active' : '' }}">
                 <i class="fas fa-bullhorn me-2"></i> Announcements
             </a>
             <a href="{{ route('ceso.website.index') }}"

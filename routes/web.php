@@ -7,6 +7,7 @@ use App\Http\Controllers\CESO\CESOActivityController;
 use App\Http\Controllers\CESO\ProjectController;
 use App\Http\Controllers\CommunityActivityController;
 use App\Http\Controllers\WebsiteContentController;
+use App\Http\Controllers\AnnouncementController;
 
 
 Route::get('/', function () {
@@ -170,6 +171,34 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/ceso/website/contact', [WebsiteContentController::class, 'updateContact'])->name('ceso.website.contact.update');
     Route::put('/ceso/website/footer', [WebsiteContentController::class, 'updateFooter'])->name('ceso.website.footer.update');
 
+    // CESO announcements
+    Route::get('/ceso/announcements', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'index'])
+        ->name('ceso.announcements.index');
+
+    Route::get('/ceso/announcements/create', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'create'])
+        ->name('ceso.announcements.create');
+
+    Route::post('/ceso/announcements', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'store'])
+        ->name('ceso.announcements.store');
+
+    Route::get('/ceso/announcements/{announcement}', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'show'])
+        ->name('ceso.announcements.show');
+
+    Route::get('/ceso/announcements/{announcement}/edit', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'edit'])
+        ->name('ceso.announcements.edit');
+
+    Route::put('/ceso/announcements/{announcement}', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'update'])
+        ->name('ceso.announcements.update');
+
+    Route::post('/ceso/announcements/{announcement}/archive', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'archive'])
+        ->name('ceso.announcements.archive');
+
+    Route::post('/ceso/announcements/{announcement}/restore', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'restore'])
+        ->name('ceso.announcements.restore');
+
+    Route::delete('/ceso/announcements/{announcement}', [\App\Http\Controllers\CESO\CESOAnnouncementController::class, 'destroy'])
+        ->name('ceso.announcements.destroy');
+
     Route::get('/create-test-table', function () {
         \Illuminate\Support\Facades\DB::statement('CREATE TABLE IF NOT EXISTS website_contents (
             id INT AUTO_INCREMENT PRIMARY KEY,
@@ -186,3 +215,10 @@ Route::middleware(['auth'])->group(function () {
         return 'Test table created successfully.';
     });
 });
+
+// Public announcements routes
+Route::get('/announcements', [AnnouncementController::class, 'index'])
+    ->name('announcements.index');
+
+Route::get('/announcements/{announcement}', [AnnouncementController::class, 'show'])
+    ->name('announcements.show');

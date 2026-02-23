@@ -245,6 +245,10 @@
                 <i class="fas fa-calendar-check"></i> Activities
             </a>
 
+            <a href="{{ route('announcements.index') }}" class="{{ request()->routeIs('announcements.*') ? 'active' : '' }}">
+                <i class="fas fa-bullhorn"></i> Announcements
+            </a>
+
             <a href="{{ route('community.my-activities') }}" class="{{ request()->routeIs('community.my-activities') ? 'active' : '' }}">
                 <i class="fas fa-user-check"></i> My Participation
             </a>

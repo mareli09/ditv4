@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(WebsiteContentSeeder::class);
         $this->call(ActivitySeeder::class);
+        $this->call(AnnouncementSeeder::class);
 
         User::updateOrCreate(
             ['email' => 'itadmin@test.com'],
