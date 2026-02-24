@@ -1,6 +1,6 @@
-@extends('layouts.community')
+@extends('layouts.faculty')
 
-@section('title', 'Dashboard - Community Portal')
+@section('title', 'Dashboard - Faculty Portal')
 
 @section('content')
 
@@ -55,10 +55,12 @@
     <div class="col-md-6">
         <div class="card">
             <div class="card-header">
-                <h5 class="fw-bold mb-0">Activity Participation</h5>
+                <h5 class="fw-bold mb-0">Participation Overview</h5>
             </div>
             <div class="card-body">
-                <canvas id="participationChart" style="max-height: 300px;"></canvas>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-line me-2"></i> Chart: Activities Joined Over Time
+                </div>
             </div>
         </div>
     </div>
@@ -69,7 +71,9 @@
                 <h5 class="fw-bold mb-0">Feedback Status</h5>
             </div>
             <div class="card-body">
-                <canvas id="feedbackChart" style="max-height: 300px;"></canvas>
+                <div class="chart-placeholder">
+                    <i class="fas fa-chart-bar me-2"></i> Chart: Submitted vs Pending Feedback
+                </div>
             </div>
         </div>
     </div>
@@ -113,70 +117,3 @@
     </div>
 
 @endsection
-
-@push('scripts')
-<script>
-    // Participation Chart
-    const participationCtx = document.getElementById('participationChart')?.getContext('2d');
-    if (participationCtx) {
-        new Chart(participationCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Available', 'Joined', 'Pending Feedback', 'Submitted Feedback'],
-                datasets: [{
-                    label: 'Activities',
-                    data: [{{ $stats['availableActivities'] }}, {{ $stats['joinedActivities'] }}, {{ $stats['pendingFeedback'] }}, {{ $stats['submittedFeedback'] }}],
-                    backgroundColor: ['#0d6efd', '#198754', '#ffc107', '#0dcaf0'],
-                    borderColor: ['#0d6efd', '#198754', '#ffc107', '#0dcaf0'],
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom'
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            stepSize: 1
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    // Feedback Status Chart
-    const feedbackCtx = document.getElementById('feedbackChart')?.getContext('2d');
-    if (feedbackCtx) {
-        new Chart(feedbackCtx, {
-            type: 'doughnut',
-            data: {
-                labels: ['Submitted Feedback', 'Pending Feedback'],
-                datasets: [{
-                    data: [{{ $stats['submittedFeedback'] }}, {{ $stats['pendingFeedback'] }}],
-                    backgroundColor: ['#198754', '#ffc107'],
-                    borderColor: ['#198754', '#ffc107'],
-                    borderWidth: 2
-                }]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                plugins: {
-                    legend: {
-                        display: true,
-                        position: 'bottom'
-                    }
-                }
-            }
-        });
-    }
-</script>
-@endpush

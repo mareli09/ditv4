@@ -55,6 +55,51 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        User::updateOrCreate(
+            ['email' => 'student@test.com'],
+            [
+                'name' => 'Sample Student',
+                'password' => bcrypt('student123'),
+                'role' => 'Student',
+                'is_active' => 1,
+                'first_name' => 'Sample',
+                'last_name' => 'Student',
+                'phone' => '09998765432',
+                'address' => 'Student Address',
+                'barangay' => 'Student Barangay'
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'faculty@test.com'],
+            [
+                'name' => 'Sample Faculty',
+                'password' => bcrypt('faculty123'),
+                'role' => 'Faculty',
+                'is_active' => 1,
+                'first_name' => 'Sample',
+                'last_name' => 'Faculty',
+                'phone' => '09876543210',
+                'address' => 'Faculty Address',
+                'barangay' => 'Faculty Barangay'
+            ]
+        );
+
+        User::updateOrCreate(
+            ['email' => 'staff@test.com'],
+            [
+                'name' => 'Sample Staff',
+                'password' => bcrypt('staff123'),
+                'role' => 'Staff',
+                'is_active' => 1,
+                'first_name' => 'Sample',
+                'last_name' => 'Staff',
+                'phone' => '09987654321',
+                'address' => 'Staff Address',
+                'barangay' => 'Staff Barangay'
+            ]
+        );
+
         // Create 10 registered community users for projects and activities
         $registeredUsers = [];
         for ($i = 1; $i <= 10; $i++) {

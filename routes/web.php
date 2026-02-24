@@ -7,6 +7,12 @@ use App\Http\Controllers\IT\ITUserController;
 use App\Http\Controllers\CESO\CESOActivityController;
 use App\Http\Controllers\CESO\ProjectController;
 use App\Http\Controllers\CommunityActivityController;
+use App\Http\Controllers\Student\StudentDashboardController;
+use App\Http\Controllers\Student\StudentActivityController;
+use App\Http\Controllers\Faculty\FacultyDashboardController;
+use App\Http\Controllers\Faculty\FacultyActivityController;
+use App\Http\Controllers\Staff\StaffDashboardController;
+use App\Http\Controllers\Staff\StaffActivityController;
 use App\Http\Controllers\WebsiteContentController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\SetupController;
@@ -86,6 +92,99 @@ Route::middleware(['auth'])->group(function () {
     // CESO profile
     Route::get('/ceso/profile', [ProfileController::class, 'cesoShow'])
         ->name('ceso.profile');
+
+    // Student Portal Routes
+    Route::get('/student/dashboard', [StudentDashboardController::class, 'index'])
+        ->name('student.dashboard');
+
+    Route::get('/student/activities', [StudentActivityController::class, 'index'])
+        ->name('student.activities');
+
+    Route::get('/student/my-activities', [StudentActivityController::class, 'myActivities'])
+        ->name('student.my-activities');
+
+    Route::get('/student/activities/{activity}', [StudentActivityController::class, 'show'])
+        ->name('student.activities.show');
+
+    Route::post('/student/activities/{activity}/join', [StudentActivityController::class, 'join'])
+        ->name('student.activities.join');
+
+    Route::post('/student/activities/join-with-code', [StudentActivityController::class, 'joinWithCode'])
+        ->name('student.activities.join-with-code');
+
+    Route::post('/student/activities/{activity}/feedback', [StudentActivityController::class, 'submitFeedback'])
+        ->name('student.activities.feedback');
+
+    Route::get('/student/profile', [ProfileController::class, 'studentShow'])
+        ->name('student.profile');
+
+    Route::post('/student/profile/password', [ProfileController::class, 'updatePassword'])
+        ->name('student.profile.update-password');
+
+    Route::post('/student/profile', [ProfileController::class, 'updateProfile'])
+        ->name('student.profile.update');
+
+    // Faculty Portal Routes
+    Route::get('/faculty/dashboard', [FacultyDashboardController::class, 'index'])
+        ->name('faculty.dashboard');
+
+    Route::get('/faculty/activities', [FacultyActivityController::class, 'index'])
+        ->name('faculty.activities');
+
+    Route::get('/faculty/my-activities', [FacultyActivityController::class, 'myActivities'])
+        ->name('faculty.my-activities');
+
+    Route::get('/faculty/activities/{activity}', [FacultyActivityController::class, 'show'])
+        ->name('faculty.activities.show');
+
+    Route::post('/faculty/activities/{activity}/join', [FacultyActivityController::class, 'join'])
+        ->name('faculty.activities.join');
+
+    Route::post('/faculty/activities/join-with-code', [FacultyActivityController::class, 'joinWithCode'])
+        ->name('faculty.activities.join-with-code');
+
+    Route::post('/faculty/activities/{activity}/feedback', [FacultyActivityController::class, 'submitFeedback'])
+        ->name('faculty.activities.feedback');
+
+    Route::get('/faculty/profile', [ProfileController::class, 'facultyShow'])
+        ->name('faculty.profile');
+
+    Route::post('/faculty/profile/password', [ProfileController::class, 'updatePassword'])
+        ->name('faculty.profile.update-password');
+
+    Route::post('/faculty/profile', [ProfileController::class, 'updateProfile'])
+        ->name('faculty.profile.update');
+
+    // Staff Portal Routes
+    Route::get('/staff/dashboard', [StaffDashboardController::class, 'index'])
+        ->name('staff.dashboard');
+
+    Route::get('/staff/activities', [StaffActivityController::class, 'index'])
+        ->name('staff.activities');
+
+    Route::get('/staff/my-activities', [StaffActivityController::class, 'myActivities'])
+        ->name('staff.my-activities');
+
+    Route::get('/staff/activities/{activity}', [StaffActivityController::class, 'show'])
+        ->name('staff.activities.show');
+
+    Route::post('/staff/activities/{activity}/join', [StaffActivityController::class, 'join'])
+        ->name('staff.activities.join');
+
+    Route::post('/staff/activities/join-with-code', [StaffActivityController::class, 'joinWithCode'])
+        ->name('staff.activities.join-with-code');
+
+    Route::post('/staff/profile/password', [ProfileController::class, 'updatePassword'])
+        ->name('staff.profile.update-password');
+
+    Route::post('/staff/profile', [ProfileController::class, 'updateProfile'])
+        ->name('staff.profile.update');
+
+    Route::post('/staff/activities/{activity}/feedback', [StaffActivityController::class, 'submitFeedback'])
+        ->name('staff.activities.feedback');
+
+    Route::get('/staff/profile', [ProfileController::class, 'staffShow'])
+        ->name('staff.profile');
 
     // CESO staff routes
     Route::get('/ceso/dashboard', [\App\Http\Controllers\CESO\CESODashboardController::class, 'index'])

@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Community Dashboard - CESO')</title>
+    <title>@yield('title', 'Student Dashboard - CESO')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap -->
@@ -382,7 +382,7 @@
         <button class="hamburger-toggle" id="sidebarToggle" aria-label="Toggle navigation">
             <i class="fas fa-bars"></i>
         </button>
-        <h4><i class="fas fa-leaf me-2" style="color: #3b82f6;"></i> Community Portal</h4>
+        <h4><i class="fas fa-graduation-cap me-2" style="color: #3b82f6;"></i> Student Portal</h4>
         <div class="header-actions">
             <span>{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
@@ -398,11 +398,11 @@
 
         <!-- SIDEBAR -->
         <div class="sidebar" id="sidebar">
-            <a href="{{ route('community.dashboard') }}" class="{{ request()->routeIs('community.dashboard') ? 'active' : '' }}">
+            <a href="{{ route('student.dashboard') }}" class="{{ request()->routeIs('student.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-chart-pie"></i> Dashboard
             </a>
 
-            <a href="{{ route('community.activities') }}" class="{{ request()->routeIs('community.activities') ? 'active' : '' }}">
+            <a href="{{ route('student.activities') }}" class="{{ request()->routeIs('student.activities') ? 'active' : '' }}">
                 <i class="fas fa-calendar-check"></i> Activities
             </a>
 
@@ -410,11 +410,11 @@
                 <i class="fas fa-bullhorn"></i> Announcements
             </a>
 
-            <a href="{{ route('community.my-activities') }}" class="{{ request()->routeIs('community.my-activities') ? 'active' : '' }}">
+            <a href="{{ route('student.my-activities') }}" class="{{ request()->routeIs('student.my-activities') ? 'active' : '' }}">
                 <i class="fas fa-user-check"></i> My Participation
             </a>
 
-            <a href="{{ route('community.profile') }}" class="{{ request()->routeIs('community.profile') ? 'active' : '' }}">
+            <a href="{{ route('student.profile') }}" class="{{ request()->routeIs('student.profile') ? 'active' : '' }}">
                 <i class="fas fa-user-cog"></i> Profile Settings
             </a>
         </div>
