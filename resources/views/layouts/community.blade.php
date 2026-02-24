@@ -200,16 +200,127 @@
                 padding-top: 0;
                 display: flex;
                 overflow-x: auto;
+                overflow-y: visible;
                 height: auto;
+                border-bottom: 1px solid #1e293b;
             }
 
             .sidebar a {
                 margin: 0 4px;
+                padding: 10px 12px;
                 white-space: nowrap;
+                font-size: 0.85rem;
+                border-radius: 0;
+            }
+
+            .sidebar a i {
+                margin-right: 6px;
+            }
+
+            .sidebar a.active {
+                border-left: none;
+                border-bottom: 3px solid #3b82f6;
+                border-radius: 0;
             }
 
             .content {
                 padding: 15px;
+            }
+
+            .header-bar {
+                padding: 12px 16px;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .header-bar h4 {
+                font-size: 1rem;
+            }
+
+            .header-actions {
+                font-size: 0.85rem;
+            }
+
+            .header-actions button {
+                font-size: 0.85rem;
+            }
+
+            .stat-card h6 {
+                font-size: 0.8rem;
+            }
+
+            .stat-card h3 {
+                font-size: 1.5rem;
+            }
+
+            .chart-placeholder {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-bar {
+                padding: 8px 12px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-bar h4 {
+                font-size: 0.95rem;
+                width: 100%;
+            }
+
+            .header-actions {
+                width: 100%;
+                font-size: 0.8rem;
+                gap: 8px;
+            }
+
+            .sidebar {
+                order: -1;
+            }
+
+            .sidebar a {
+                padding: 8px 10px;
+                font-size: 0.75rem;
+                margin: 2px 2px;
+            }
+
+            .sidebar a i {
+                margin-right: 4px;
+            }
+
+            .content {
+                padding: 12px;
+            }
+
+            .content-header {
+                flex-direction: column;
+                gap: 8px;
+            }
+
+            .content-header h3 {
+                font-size: 1.1rem;
+            }
+
+            .stat-card h3 {
+                font-size: 1.25rem;
+            }
+
+            .stat-card h6 {
+                font-size: 0.7rem;
+            }
+
+            .card-body {
+                padding: 15px;
+            }
+
+            .card-header {
+                padding: 12px;
+            }
+
+            .table-responsive {
+                font-size: 0.8rem;
             }
         }
     </style>

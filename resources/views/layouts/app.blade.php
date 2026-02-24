@@ -13,17 +13,36 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         :root {
             --ceso-blue: #0a3d62;
         }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+
         .navbar-ceso {
             background-color: var(--ceso-blue);
+            padding: 10px 16px;
+        }
+
+        .navbar-ceso .navbar-brand {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.25rem;
         }
 
         .navbar-ceso .nav-link {
             color: rgba(255, 255, 255, .85);
             font-weight: 500;
+            font-size: 0.95rem;
+            padding: 8px 12px;
         }
 
         .navbar-ceso .nav-link:hover,
@@ -33,8 +52,9 @@
             text-underline-offset: 4px;
         }
 
-        .navbar-ceso .navbar-brand {
-            color: #ffffff;
+        .navbar-toggler {
+            padding: 4px 8px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
         }
 
         .about-section {
@@ -44,7 +64,7 @@
 
         .about-overlay {
             background: rgba(0, 0, 0, .65);
-            padding: 60px 20px;
+            padding: 40px 20px;
             border-radius: 10px;
         }
 
@@ -59,6 +79,53 @@
             justify-content: center;
             margin: 0 8px;
             font-size: 18px;
+        }
+
+        @media (max-width: 768px) {
+            .navbar-ceso {
+                padding: 8px 12px;
+            }
+
+            .navbar-ceso .navbar-brand {
+                font-size: 1.1rem;
+            }
+
+            .navbar-ceso .nav-link {
+                font-size: 0.9rem;
+                padding: 6px 10px;
+            }
+
+            .about-overlay {
+                padding: 30px 15px;
+            }
+
+            .social-icon {
+                width: 35px;
+                height: 35px;
+                margin: 0 6px;
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar-toggler {
+                padding: 3px 6px;
+            }
+
+            .navbar-ceso .navbar-brand {
+                font-size: 1rem;
+            }
+
+            .about-overlay {
+                padding: 20px 12px;
+            }
+
+            .social-icon {
+                width: 32px;
+                height: 32px;
+                margin: 0 4px;
+                font-size: 14px;
+            }
         }
     </style>
 
