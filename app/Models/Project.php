@@ -35,4 +35,11 @@ class Project extends Model
     {
         return $query->where('is_archived', true);
     }
-}
+
+    /**
+     * Relationship with users
+     */
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'project_user')->withTimestamps();
+    }}

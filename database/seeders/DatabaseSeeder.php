@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ActivitySeeder::class);
         $this->call(AnnouncementSeeder::class);
 
+        // Create test users
         User::updateOrCreate(
             ['email' => 'itadmin@test.com'],
             [
@@ -54,10 +55,33 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        // Fetch registered users
+        // Create 10 registered community users for projects and activities
+        $registeredUsers = [];
+        for ($i = 1; $i <= 10; $i++) {
+            $user = User::firstOrCreate(
+                ['email' => "registereduser{$i}@test.com"],
+                [
+                    'name' => "Registered User {$i}",
+                    'password' => bcrypt('password123'),
+                    'role' => 'Community',
+                    'is_active' => 1,
+                    'first_name' => "User",
+                    'last_name' => "Number {$i}",
+                    'phone' => "091234567" . str_pad($i, 2, '0', STR_PAD_LEFT),
+                    'address' => "Sample Address {$i}",
+                    'barangay' => "Sample Barangay {$i}"
+                ]
+            );
+            $registeredUsers[] = $user;
+        }
+
+        // Now call ProjectSeeder after users are created
+        $this->call(ProjectSeeder::class);
+
+        // Fetch all users
         $users = \App\Models\User::take(15)->get();
 
-        // Add dummy feedback for testing
+        // Add dummy feedback and participants for testing
         $activity = \App\Models\Activity::first(); // Use the first activity for testing
 
         if ($activity && $users->isNotEmpty()) {
@@ -87,6 +111,16 @@ class DatabaseSeeder extends Seeder
                     'rating' => $feedback['rating'],
                 ]);
             }
+
+            // Add some registered users as participants to the activity
+            foreach ($registeredUsers as $user) {
+                if (!$activity->participants()->where('user_id', $user->id)->exists()) {
+                    $activity->participants()->create([
+                        'user_id' => $user->id,
+                        'participant_type' => 'community',
+                    ]);
+                }
+            }
         }
-    }
+}
 }
