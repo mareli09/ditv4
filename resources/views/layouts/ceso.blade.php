@@ -268,7 +268,7 @@
             </a>
             <a href="{{ route('ceso.website.index') }}"
                 class="{{ request()->routeIs('ceso.website.*') ? 'active' : '' }}">
-                <i class="fas fa-globe"></i> Website
+                <i class="fas fa-globe"></i> Website CMS
             </a>
             <a href="{{ route('ceso.profile') }}"
                 class="{{ request()->routeIs('ceso.profile') ? 'active' : '' }}">
