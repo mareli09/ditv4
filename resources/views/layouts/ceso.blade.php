@@ -241,7 +241,7 @@
         </button>
         <h4 class="fw-bold mb-0">CESO Staff</h4>
         <div>
-            <span>{{ auth()->user()->name }}</span>
+            <span>{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
             <form method="POST" action="{{ route('logout') }}" style="display:inline;">
                 @csrf
                 <button class="btn btn-outline-light">Logout</button>
@@ -269,6 +269,10 @@
             <a href="{{ route('ceso.website.index') }}"
                 class="{{ request()->routeIs('ceso.website.*') ? 'active' : '' }}">
                 <i class="fas fa-globe"></i> Website
+            </a>
+            <a href="{{ route('ceso.profile') }}"
+                class="{{ request()->routeIs('ceso.profile') ? 'active' : '' }}">
+                <i class="fas fa-user-cog"></i> Profile Settings
             </a>
         </div>
 

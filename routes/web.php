@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\IT\ITDashboardController;
 use App\Http\Controllers\IT\ITUserController;
 use App\Http\Controllers\CESO\CESOActivityController;
@@ -69,9 +70,22 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/community/my-activities', [CommunityActivityController::class, 'myActivities'])
         ->name('community.my-activities');
 
-    Route::get('/community/profile', function () {
-        return view('community.profile');
-    })->name('community.profile');
+    Route::get('/community/profile', [ProfileController::class, 'communityShow'])
+        ->name('community.profile');
+
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])
+        ->name('profile.update-password');
+
+    Route::put('/profile', [ProfileController::class, 'updateProfile'])
+        ->name('profile.update');
+
+    // IT profile
+    Route::get('/it/profile', [ProfileController::class, 'itShow'])
+        ->name('it.profile');
+
+    // CESO profile
+    Route::get('/ceso/profile', [ProfileController::class, 'cesoShow'])
+        ->name('ceso.profile');
 
     // CESO staff routes
     Route::get('/ceso/dashboard', [\App\Http\Controllers\CESO\CESODashboardController::class, 'index'])

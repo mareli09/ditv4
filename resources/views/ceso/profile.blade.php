@@ -1,6 +1,6 @@
-@extends('layouts.community')
+@extends('layouts.ceso')
 
-@section('title', 'Profile Settings - Community Portal')
+@section('title', 'Profile Settings - CESO Portal')
 
 @section('content')
 

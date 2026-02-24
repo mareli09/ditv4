@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             ['email' => 'community@test.com'],
             [
                 'name' => 'Community User',
-                'password' => bcrypt('password123'),
+                'password' => bcrypt('password1234'),
                 'role' => 'Community',
                 'is_active' => 1,
                 'first_name' => 'Sample',

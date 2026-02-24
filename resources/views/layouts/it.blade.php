@@ -222,7 +222,7 @@ body {
     </button>
     <h4 class="fw-bold mb-0">IT Staff Portal</h4>
     <div>
-        <span>{{ auth()->user()->name }}</span>
+        <span>{{ auth()->user()->first_name }} {{ auth()->user()->last_name }}</span>
 
         <form method="POST" action="{{ route('logout') }}" class="d-inline">
             @csrf
@@ -245,6 +245,11 @@ body {
         <a href="{{ route('it.users.index') }}"
            class="{{ request()->routeIs('it.users.*') ? 'active' : '' }}">
             <i class="fas fa-users-cog"></i> User Management
+        </a>
+
+        <a href="{{ route('it.profile') }}"
+           class="{{ request()->routeIs('it.profile') ? 'active' : '' }}">
+            <i class="fas fa-user-cog"></i> Profile Settings
         </a>
     </div>
 
