@@ -67,6 +67,8 @@
             transition: all .3s ease;
             overflow-y: auto;
             flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
         }
 
         .sidebar a {
@@ -99,6 +101,24 @@
             border-left: 3px solid #3b82f6;
         }
 
+        .hamburger-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px 12px;
+        }
+
+        .sidebar.collapsed {
+            display: none;
+        }
+
+        .sidebar.expanded {
+            display: flex !important;
+        }
+
         .content {
             padding: 20px;
             flex: 1;
@@ -108,6 +128,10 @@
 
         /* Mobile responsiveness */
         @media (max-width: 768px) {
+            .hamburger-toggle {
+                display: block;
+            }
+
             .layout-wrapper {
                 flex-direction: column;
             }
@@ -116,11 +140,20 @@
                 width: 100%;
                 min-height: auto;
                 padding-top: 0;
-                display: flex;
-                flex-wrap: wrap;
+                display: none;
                 overflow-x: auto;
                 overflow-y: visible;
                 border-bottom: 1px solid #1e293b;
+                position: absolute;
+                top: 65px;
+                left: 0;
+                right: 0;
+                background: #0f172a;
+                z-index: 99;
+            }
+
+            .sidebar.expanded {
+                display: flex !important;
             }
 
             .sidebar a {
@@ -168,22 +201,27 @@
         @media (max-width: 480px) {
             .header-bar {
                 padding: 8px;
-                flex-direction: column;
-                align-items: flex-start;
+                flex-direction: row;
+                align-items: center;
             }
 
             .header-bar h4 {
                 font-size: 0.95rem;
-                width: 100%;
+                flex: 1;
             }
 
             .header-bar div:last-child {
-                width: 100%;
-                justify-content: space-between;
+                display: flex;
+                align-items: center;
+                gap: 8px;
             }
 
             .sidebar {
-                order: -1;
+                position: fixed;
+                top: 65px;
+                left: 0;
+                right: 0;
+                z-index: 99;
             }
 
             .content {
@@ -198,6 +236,9 @@
 <body>
 
     <div class="header-bar">
+        <button class="hamburger-toggle" id="sidebarToggle" aria-label="Toggle navigation">
+            <i class="fas fa-bars"></i>
+        </button>
         <h4 class="fw-bold mb-0">CESO Staff</h4>
         <div>
             <span>{{ auth()->user()->name }}</span>
@@ -209,7 +250,7 @@
     </div>
 
     <div class="layout-wrapper">
-        <div class="sidebar">
+        <div class="sidebar" id="sidebar">
             <a href="{{ route('ceso.dashboard') }}" class="{{ request()->routeIs('ceso.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-chart-line"></i> Dashboard
             </a>
@@ -238,6 +279,37 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                // Toggle sidebar on hamburger click
+                sidebarToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('expanded');
+                });
+                
+                // Close sidebar when a link is clicked
+                sidebar.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        sidebar.classList.remove('expanded');
+                    });
+                });
+                
+                // Close sidebar when clicking outside
+                document.addEventListener('click', function(event) {
+                    const isClickInsideSidebar = sidebar.contains(event.target);
+                    const isClickOnToggle = sidebarToggle.contains(event.target);
+                    
+                    if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('expanded')) {
+                        sidebar.classList.remove('expanded');
+                    }
+                });
+            }
+        });
+    </script>
     @stack('scripts')
 </body>
 

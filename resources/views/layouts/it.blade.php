@@ -66,6 +66,8 @@ body {
     padding-top: 12px;
     flex-shrink: 0;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar a {
@@ -110,6 +112,10 @@ body {
 
 /* Mobile responsive */
 @media (max-width: 768px) {
+    .hamburger-toggle {
+        display: block;
+    }
+
     .layout-wrapper {
         flex-direction: column;
         height: auto;
@@ -119,26 +125,20 @@ body {
         width: 100%;
         min-height: auto;
         padding-top: 0;
-        display: flex;
-        flex-wrap: wrap;
-        overflow-x: auto;
-        overflow-y: visible;
-        border-bottom: 1px solid #1e293b;
-    }
+        display: none;
+            overflow-x: auto;
+            overflow-y: visible;
+            border-bottom: 1px solid #1e293b;
+            position: absolute;
+            top: 65px;
+            left: 0;
+            right: 0;
+            background: #0f172a;
+            z-index: 99;
+        }
 
-    .sidebar a {
-        margin: 0 4px;
-        padding: 10px 12px;
-        font-size: 0.85rem;
-        white-space: nowrap;
-        border-radius: 0;
-    }
-
-    .sidebar a i {
-        margin-right: 6px;
-    }
-
-    .sidebar a.active {
+        .sidebar.expanded {
+            display: flex !important;
         border-left: none;
         border-bottom: 3px solid #3b82f6;
         border-radius: 0;
@@ -171,23 +171,29 @@ body {
 @media (max-width: 480px) {
     .header-bar {
         padding: 8px;
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        align-items: center;
+        gap: 8px;
     }
 
     .header-bar h4 {
         font-size: 0.95rem;
-        width: 100%;
+        flex: 1;
     }
 
     .header-bar > div:last-child {
-        width: 100%;
-        justify-content: space-between;
+        display: flex;
+        align-items: center;
         font-size: 0.8rem;
+        gap: 8px;
     }
 
     .sidebar {
-        order: -1;
+        position: fixed;
+        top: 65px;
+        left: 0;
+        right: 0;
+        z-index: 99;
     }
 
     .sidebar a {
@@ -211,9 +217,12 @@ body {
 
 <!-- HEADER -->
 <div class="header-bar">
+    <button class="hamburger-toggle" id="sidebarToggle" aria-label="Toggle navigation">
+        <i class="fas fa-bars"></i>
+    </button>
     <h4 class="fw-bold mb-0">IT Staff Portal</h4>
     <div>
-        <span class="me-3">{{ auth()->user()->name }}</span>
+        <span>{{ auth()->user()->name }}</span>
 
         <form method="POST" action="{{ route('logout') }}" class="d-inline">
             @csrf
@@ -227,15 +236,15 @@ body {
 <div class="layout-wrapper">
 
     <!-- SIDEBAR -->
-    <div class="sidebar">
+    <div class="sidebar" id="sidebar">
         <a href="{{ route('it.dashboard') }}"
            class="{{ request()->routeIs('it.dashboard') ? 'active' : '' }}">
-            <i class="fas fa-gauge me-2"></i> Dashboard
+            <i class="fas fa-gauge"></i> Dashboard
         </a>
 
         <a href="{{ route('it.users.index') }}"
            class="{{ request()->routeIs('it.users.*') ? 'active' : '' }}">
-            <i class="fas fa-users-cog me-2"></i> User Management
+            <i class="fas fa-users-cog"></i> User Management
         </a>
     </div>
 
@@ -246,5 +255,36 @@ body {
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                // Toggle sidebar on hamburger click
+                sidebarToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    sidebar.classList.toggle('expanded');
+                });
+                
+                // Close sidebar when a link is clicked
+                sidebar.querySelectorAll('a').forEach(link => {
+                    link.addEventListener('click', function() {
+                        sidebar.classList.remove('expanded');
+                    });
+                });
+                
+                // Close sidebar when clicking outside
+                document.addEventListener('click', function(event) {
+                    const isClickInsideSidebar = sidebar.contains(event.target);
+                    const isClickOnToggle = sidebarToggle.contains(event.target);
+                    
+                    if (!isClickInsideSidebar && !isClickOnToggle && sidebar.classList.contains('expanded')) {
+                        sidebar.classList.remove('expanded');
+                    }
+                });
+            }
+        });
+    </script>
 </body>
 </html>
