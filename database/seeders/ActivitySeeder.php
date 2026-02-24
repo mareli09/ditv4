@@ -21,6 +21,8 @@ class ActivitySeeder extends Seeder
             'conducted_by' => 'Research Office',
             'fee' => 500,
             'description' => 'An intensive workshop on advanced research methodologies and data analysis techniques. This session covers qualitative and quantitative approaches, statistical analysis, and practical applications in various fields.',
+            'entry_code' => Activity::generateEntryCode(),
+            'requires_entry_code' => true,
         ]);
 
         // Positive feedback
@@ -54,6 +56,8 @@ class ActivitySeeder extends Seeder
             'conducted_by' => 'Human Resources',
             'fee' => 800,
             'description' => 'A seminar on developing leadership skills and team management techniques designed for middle-level managers and supervisors.',
+            'entry_code' => Activity::generateEntryCode(),
+            'requires_entry_code' => true,
         ]);
 
         // Negative feedback
@@ -87,6 +91,8 @@ class ActivitySeeder extends Seeder
             'conducted_by' => 'Community Services',
             'fee' => 300,
             'description' => 'An outreach program aiming to connect the university with the local community through various activities and information sessions.',
+            'entry_code' => Activity::generateEntryCode(),
+            'requires_entry_code' => true,
         ]);
 
         // Neutral feedback

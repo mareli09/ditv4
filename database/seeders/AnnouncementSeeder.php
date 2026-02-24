@@ -13,7 +13,16 @@ class AnnouncementSeeder extends Seeder
      */
     public function run(): void
     {
-        $cesoUser = User::where('role', 'CESO')->first() ?? User::first();
+        // Create or get CESO user
+        $cesoUser = User::firstOrCreate(
+            ['email' => 'ceso@test.com'],
+            [
+                'name' => 'CESO Staff',
+                'password' => bcrypt('cesoPass123'),
+                'role' => 'CESO',
+                'is_active' => 1
+            ]
+        );
 
         // Published announcements
         Announcement::create([

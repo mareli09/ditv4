@@ -58,7 +58,12 @@ class CESOActivityController extends Controller
 
         $activity = Activity::create(array_merge(
             collect($validated)->except(['invited_faculty_ids', 'invited_staff_ids', 'invited_student_ids', 'invited_community_ids', 'invited_other_names'])->toArray(),
-            ['created_by' => auth()->id(), 'attachments' => null]
+            [
+                'created_by' => auth()->id(), 
+                'attachments' => null,
+                'entry_code' => Activity::generateEntryCode(),
+                'requires_entry_code' => true
+            ]
         ));
 
         // Attach participants from database

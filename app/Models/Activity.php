@@ -11,7 +11,8 @@ class Activity extends Model
 
     protected $fillable = [
         'title','venue','start_date','end_date','start_time','end_time',
-        'conducted_by','fee','description','attachments','created_by','archived_at'
+        'conducted_by','fee','description','attachments','created_by','archived_at',
+        'entry_code','requires_entry_code'
     ];
 
     protected $casts = [
@@ -29,5 +30,25 @@ class Activity extends Model
     public function participants()
     {
         return $this->hasMany(ActivityParticipant::class);
+    }
+
+    /**
+     * Generate a unique entry code for the activity
+     */
+    public static function generateEntryCode()
+    {
+        do {
+            $code = strtoupper(substr(str_shuffle('ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'), 0, 6));
+        } while (self::where('entry_code', $code)->exists());
+
+        return $code;
+    }
+
+    /**
+     * Scope to get only active (not archived) activities
+     */
+    public function scopeActive($query)
+    {
+        return $query->whereNull('archived_at');
     }
 }

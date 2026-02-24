@@ -49,6 +49,18 @@
                     <label class="form-label fw-bold">End Date</label>
                     <div class="label-value">{{ $activity->end_date?->format('Y-m-d') }}</div>
                 </div>
+                <div class="col-md-12">
+                    <label class="form-label fw-bold">Entry Code (Share with Participants)</label>
+                    <div class="d-flex align-items-center gap-2">
+                        <div class="card bg-primary bg-opacity-10 p-3 flex-grow-1">
+                            <h3 class="mb-0 text-primary" style="letter-spacing: 2px; font-weight: bold;">{{ $activity->entry_code }}</h3>
+                            <small class="text-muted">Community members use this code to join the activity</small>
+                        </div>
+                        <button class="btn btn-primary" onclick="copyEntryCode('{{ $activity->entry_code }}')">
+                            <i class="fas fa-copy me-2"></i>Copy Code
+                        </button>
+                    </div>
+                </div>
 
                 <div class="col-12 mt-3">
                     <label class="form-label fw-bold">Description</label>
@@ -181,11 +193,11 @@
                             <div class="text-center">
                                 <h6 class="text-muted small">Effectiveness Score</h6>
                                 <div style="font-size: 2.5rem; font-weight: bold; color: 
-                                    @if($insights['effectiveness_score'] >= 80) #28a745
-                                    @elseif($insights['effectiveness_score'] >= 60) #ffc107
+                                    @if(($insights['effectiveness_score'] ?? 0) >= 80) #28a745
+                                    @elseif(($insights['effectiveness_score'] ?? 0) >= 60) #ffc107
                                     @else #dc3545
                                     @endif;">
-                                    {{ $insights['effectiveness_score'] }}%
+                                    {{ $insights['effectiveness_score'] ?? 0 }}%
                                 </div>
                                 <small class="text-muted">Overall Activity Performance</small>
                             </div>
@@ -195,12 +207,12 @@
                                 <h6 class="text-muted small">Overall Performance</h6>
                                 <div style="font-size: 1.8rem; font-weight: bold;">
                                     <span class="badge 
-                                        @if($insights['overall_performance'] === 'Excellent') bg-success
-                                        @elseif($insights['overall_performance'] === 'Good') bg-info
-                                        @elseif($insights['overall_performance'] === 'Fair') bg-warning
+                                        @if(($insights['overall_performance'] ?? '') === 'Excellent') bg-success
+                                        @elseif(($insights['overall_performance'] ?? '') === 'Good') bg-info
+                                        @elseif(($insights['overall_performance'] ?? '') === 'Fair') bg-warning
                                         @else bg-danger
                                         @endif">
-                                        {{ $insights['overall_performance'] }}
+                                        {{ $insights['overall_performance'] ?? 'N/A' }}
                                     </span>
                                 </div>
                             </div>
@@ -210,15 +222,15 @@
                                 <h6 class="text-muted small">Sentiment Distribution</h6>
                                 <div class="d-flex gap-2 justify-content-center mt-2">
                                     <div>
-                                        <span class="badge bg-success">{{ $insights['sentiment_distribution']['positive'] }}%</span>
+                                        <span class="badge bg-success">{{ ($insights['sentiment_distribution']['positive'] ?? 0) }}%</span>
                                         <small class="d-block text-muted">Positive</small>
                                     </div>
                                     <div>
-                                        <span class="badge bg-secondary">{{ $insights['sentiment_distribution']['neutral'] }}%</span>
+                                        <span class="badge bg-secondary">{{ ($insights['sentiment_distribution']['neutral'] ?? 0) }}%</span>
                                         <small class="d-block text-muted">Neutral</small>
                                     </div>
                                     <div>
-                                        <span class="badge bg-danger">{{ $insights['sentiment_distribution']['negative'] }}%</span>
+                                        <span class="badge bg-danger">{{ ($insights['sentiment_distribution']['negative'] ?? 0) }}%</span>
                                         <small class="d-block text-muted">Negative</small>
                                     </div>
                                 </div>
@@ -351,5 +363,22 @@
         </div>
     </div>
 </div>
+
+<script>
+function copyEntryCode(code) {
+    navigator.clipboard.writeText(code).then(() => {
+        const btn = event.target;
+        const originalText = btn.innerHTML;
+        btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+        btn.classList.add('btn-success');
+        btn.classList.remove('btn-primary');
+        setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('btn-success');
+            btn.classList.add('btn-primary');
+        }, 2000);
+    });
+}
+</script>
 @endsection
 

@@ -7,6 +7,13 @@
 <div class="container-fluid">
     <h3 class="fw-bold mb-3">Create Activity</h3>
 
+    <!-- Entry Code Information -->
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <i class="fas fa-info-circle me-2"></i>
+        <strong>Entry Code System:</strong> Each activity will automatically receive a unique 6-character entry code. Community members will use this code to join your activity. You can find and share the code on the activity details page after creation.
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
     @endif

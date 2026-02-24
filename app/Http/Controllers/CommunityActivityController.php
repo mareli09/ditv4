@@ -37,6 +37,37 @@ class CommunityActivityController extends Controller
         return back()->with('success', 'You have successfully joined the activity.');
     }
 
+    public function joinWithCode(Request $request)
+    {
+        $validated = $request->validate([
+            'entry_code' => 'required|string|size:6',
+        ]);
+
+        $activity = Activity::where('entry_code', strtoupper($validated['entry_code']))
+                            ->active()
+                            ->first();
+
+        if (!$activity) {
+            return back()->withErrors(['Invalid entry code. Please check and try again.']);
+        }
+
+        $user = auth()->user();
+
+        // Check if user already joined
+        if ($activity->participants()->where('user_id', $user->id)->exists()) {
+            return back()->withErrors(['You have already joined this activity.']);
+        }
+
+        // Add user as participant
+        $activity->participants()->create([
+            'user_id' => $user->id,
+            'participant_type' => 'community',
+        ]);
+
+        return redirect()->route('community.activities.show', $activity->id)
+                        ->with('success', 'You have successfully joined the activity!');
+    }
+
     public function show(Activity $activity)
     {
         return view('community.activity_details', compact('activity'));

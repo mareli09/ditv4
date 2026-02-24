@@ -8,6 +8,7 @@ use App\Http\Controllers\CESO\ProjectController;
 use App\Http\Controllers\CommunityActivityController;
 use App\Http\Controllers\WebsiteContentController;
 use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\SetupController;
 
 
 Route::get('/', function () {
@@ -145,6 +146,8 @@ Route::middleware(['auth'])->group(function () {
 
     // Community joining activities
     Route::post('/community/activities/{activity}/join', [CommunityActivityController::class, 'join'])->name('community.activities.join');
+    
+    Route::post('/community/activities/join-with-code', [CommunityActivityController::class, 'joinWithCode'])->name('community.activities.join-with-code');
 
     // Community submitting feedback
     Route::post('/community/activities/{activity}/feedback', [CommunityActivityController::class, 'submitFeedback'])->name('community.activities.feedback');
@@ -215,6 +218,10 @@ Route::middleware(['auth'])->group(function () {
         return 'Test table created successfully.';
     });
 });
+
+// Database setup routes
+Route::get('/setup', [SetupController::class, 'index'])->name('setup.index');
+Route::post('/setup/add-entry-codes', [SetupController::class, 'addEntryCodeColumn'])->name('setup.add-entry-codes');
 
 // Public announcements routes
 Route::get('/announcements', [AnnouncementController::class, 'index'])
