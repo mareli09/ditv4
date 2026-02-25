@@ -89,16 +89,25 @@
 <div class="bg-light p-4 rounded h-100">
 <h3 class="fw-bold mb-3">Latest News</h3>
 
-<ul class="list-unstyled">
-@foreach(json_decode($contents['latest_news'] ?? '[]') as $news)
-<li class="d-flex mb-3">
-    <img src="{{ $news->image }}" class="me-3 rounded">
-    <p class="mb-0">
-        {{ $news->text }}
-    </p>
-</li>
-@endforeach
-</ul>
+@php
+    $news = array_filter([
+        $contents['news_1'] ?? null,
+        $contents['news_2'] ?? null,
+        $contents['news_3'] ?? null,
+    ]);
+@endphp
+
+@if(count($news) > 0)
+    <ul class="list-unstyled">
+        @foreach($news as $newsItem)
+            <li class="mb-3 pb-3 border-bottom">
+                <p class="mb-0 text-dark">{{ $newsItem }}</p>
+            </li>
+        @endforeach
+    </ul>
+@else
+    <p class="text-muted text-center py-4">No news available at the moment</p>
+@endif
 
 </div>
 </div>
