@@ -56,7 +56,18 @@
                             @error('password')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
+                            <div class="text-end mt-1">
+                                <a href="{{ route('password.request') }}" class="text-muted small">
+                                    Forgot password?
+                                </a>
+                            </div>
                         </div>
+
+                        @if(session('success'))
+                            <div class="alert alert-success mb-3">
+                                {{ session('success') }}
+                            </div>
+                        @endif
 
                         <button type="submit" class="btn btn-primary w-100 mb-3">
                             Login

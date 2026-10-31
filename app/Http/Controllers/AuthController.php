@@ -35,6 +35,17 @@ class AuthController extends Controller
 
             $request->session()->regenerate();
 
+            // Check email verification
+            if (!$user->email_verified_at) {
+                try {
+                    VerifyEmailController::sendVerificationEmail($user);
+                } catch (\Exception $e) {
+                    // Mail failure should not block login flow
+                }
+                return redirect()->route('verification.notice')
+                    ->with('info', 'Please check your email and verify your account before continuing.');
+            }
+
             // Role-based redirect
             if ($user->role === 'IT') {
                 return redirect()->route('it.dashboard');
